@@ -42,8 +42,8 @@ const mapWorkshopList = (response: GetAvailableSeansItemsResponse, currentPage: 
 
 export class SocietyService {
 
-  async getAvailableSeansItems(request: GetAvailableSeansItemsRequest = {}): Promise<WorkshopList> {
-    const { page = 1, page_size = 100 } = request;
+  async getAvailableSeansItems(request: GetAvailableSeansItemsRequest): Promise<WorkshopList> {
+    const { page, page_size } = request;
     const url = `api/society/public/available-seans-items/?page=${page}&page_size=${page_size}`;
 
     const response = await httpApiClient.get<GetAvailableSeansItemsResponse>(url);

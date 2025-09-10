@@ -12,8 +12,8 @@ export interface GetSocietyResponse {
 }
 
 export interface GetAvailableSeansItemsRequest {
-  page?: number;
-  page_size?: number;
+  page: number;
+  page_size: number;
 }
 
 export interface WorkshopCategory {
