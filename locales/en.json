@@ -6,6 +6,19 @@
   "Common": {
     "language": "Language",
     "turkish": "Turkish",
-    "english": "English"
+    "english": "English",
+    "home": "Home",
+    "events": "Events",
+    "about": "About",
+    "contact": "Contact",
+    "footerDescription": "Modern and user-friendly event management platform",
+    "quickLinks": "Quick Links",
+    "support": "Support",
+    "help": "Help",
+    "faq": "FAQ",
+    "legal": "Legal",
+    "privacy": "Privacy Policy",
+    "terms": "Terms of Service",
+    "allRightsReserved": "All rights reserved."
   }
 }

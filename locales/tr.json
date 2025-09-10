@@ -6,6 +6,19 @@
   "Common": {
     "language": "Dil",
     "turkish": "Türkçe",
-    "english": "İngilizce"
+    "english": "İngilizce",
+    "home": "Ana Sayfa",
+    "events": "Etkinlikler",
+    "about": "Hakkımızda",
+    "contact": "İletişim",
+    "footerDescription": "Modern ve kullanıcı dostu etkinlik yönetim platformu",
+    "quickLinks": "Hızlı Bağlantılar",
+    "support": "Destek",
+    "help": "Yardım",
+    "faq": "Sık Sorulan Sorular",
+    "legal": "Yasal",
+    "privacy": "Gizlilik Politikası",
+    "terms": "Kullanım Şartları",
+    "allRightsReserved": "Tüm hakları saklıdır."
   }
 }
