@@ -1,18 +1,18 @@
-import { useTranslations } from 'next-intl';
+import { getTranslations } from 'next-intl/server';
 import { ArrowLeft } from 'lucide-react';
 import Link from 'next/link';
 
 interface CommunityDetailPageProps {
-  params: {
+  params: Promise<{
     id: string;
-  };
+  }>;
 }
 
-export default function CommunityDetailPage({ params }: CommunityDetailPageProps) {
-  const t = useTranslations('CommunityDetailPage');
+export default async function CommunityDetailPage({ params }: CommunityDetailPageProps) {
+  const t = await getTranslations('CommunityDetailPage');
 
   // TODO: API'den veri çekilecek
-  const communityId = params.id;
+  const { id: communityId } = await params;
 
   return (
     <div className="bg-gradient-to-br from-purple-50 to-blue-50 dark:from-gray-900 dark:to-gray-800 py-12">

@@ -1,9 +1,7 @@
-'use client';
+import { getTranslations } from 'next-intl/server';
 
-import { useTranslations } from 'next-intl';
-
-export function Footer() {
-  const t = useTranslations('Common');
+export async function Footer() {
+  const t = await getTranslations('Common');
 
   return (
     <footer className="border-t bg-background">

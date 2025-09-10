@@ -40,6 +40,9 @@ export default getRequestConfig(async () => {
   return {
     locale,
     messages,
-    timeZone: 'Europe/Istanbul'
+    timeZone: 'Europe/Istanbul',
+    defaultTranslationValues: {
+      globalTimeZone: 'Europe/Istanbul'
+    }
   };
 });

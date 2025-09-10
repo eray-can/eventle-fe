@@ -19,6 +19,11 @@ const geistMono = Geist_Mono({
 export const metadata: Metadata = {
   title: "Eventle - Etkinlik Yönetim Platformu",
   description: "Modern ve kullanıcı dostu etkinlik yönetim platformu",
+  icons: {
+    icon: "/eventle-transparan-logo.webp",
+    shortcut: "/eventle-transparan-logo.webp",
+    apple: "/eventle-transparan-logo.webp",
+  },
 };
 
 export default async function RootLayout({

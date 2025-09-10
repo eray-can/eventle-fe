@@ -1,11 +1,9 @@
-'use client';
-
-import { useTranslations } from 'next-intl';
+import { getTranslations } from 'next-intl/server';
 import { LanguageToggle } from '@/components/language-toggle';
 import Link from 'next/link';
 
-export function Header() {
-  const t = useTranslations('Common');
+export async function Header() {
+  const t = await getTranslations('Common');
 
   return (
     <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
