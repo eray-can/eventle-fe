@@ -1,4 +1,3 @@
-// Society service - Topluluk sayfası istekleri
 import { httpApiClient } from '../clients/api-client';
 import type { Workshop, WorkshopList } from '@/types/domain';
 import type {
@@ -51,5 +50,4 @@ export class SocietyService {
   }
 }
 
-// Export instance
 export const societyService = new SocietyService();

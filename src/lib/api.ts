@@ -1,5 +1,3 @@
-// API client - Domain independent axios wrapper
-
 export interface ApiConfig {
   baseURL: string;
   timeout: number;
@@ -65,11 +63,5 @@ class ApiClient {
     return this.request<T>({ method: 'DELETE', url });
   }
 }
-
-// Default API client instance
-export const apiClient = new ApiClient({
-  baseURL: process.env.NEXT_PUBLIC_API_BASE_URL || 'http://localhost:3001/api',
-  timeout: 10000,
-});
 
 export { ApiClient };
