@@ -1,0 +1,11 @@
+{
+  "HomePage": {
+    "title": "Eventle",
+    "subtitle": "Event Management Platform"
+  },
+  "Common": {
+    "language": "Language",
+    "turkish": "Turkish",
+    "english": "English"
+  }
+}

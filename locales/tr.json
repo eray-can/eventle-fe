@@ -1,0 +1,11 @@
+{
+  "HomePage": {
+    "title": "Eventle",
+    "subtitle": "Etkinlik Yönetim Platformu"
+  },
+  "Common": {
+    "language": "Dil",
+    "turkish": "Türkçe",
+    "english": "İngilizce"
+  }
+}
