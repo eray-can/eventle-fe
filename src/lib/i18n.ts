@@ -28,7 +28,7 @@ export async function getLocale(): Promise<Locale> {
 export async function getMessages(locale: Locale) {
   try {
     return (await import(`../../locales/${locale}.json`)).default;
-  } catch (error) {
+  } catch {
     return (await import(`../../locales/${defaultLocale}.json`)).default;
   }
 }

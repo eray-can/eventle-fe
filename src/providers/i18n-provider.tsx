@@ -6,7 +6,7 @@ import { Locale } from '@/lib/i18n';
 interface I18nProviderProps {
   children: React.ReactNode;
   locale: Locale;
-  messages: any;
+  messages: Record<string, unknown>;
 }
 
 export function I18nProvider({ children, locale, messages }: I18nProviderProps) {

@@ -1,7 +1,5 @@
 import { useTranslations } from 'next-intl';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
-import { Users, MessageCircle, Calendar, MapPin, Clock, Star, ArrowLeft } from 'lucide-react';
+import { ArrowLeft } from 'lucide-react';
 import Link from 'next/link';
 
 interface CommunityDetailPageProps {
@@ -12,7 +10,6 @@ interface CommunityDetailPageProps {
 
 export default function CommunityDetailPage({ params }: CommunityDetailPageProps) {
   const t = useTranslations('CommunityDetailPage');
-  const common = useTranslations('Common');
 
   // TODO: API'den veri çekilecek
   const communityId = params.id;
@@ -36,9 +33,9 @@ export default function CommunityDetailPage({ params }: CommunityDetailPageProps
           <h1 className="text-4xl font-bold text-gray-900 dark:text-white mb-4">
             Topluluk #{communityId}
           </h1>
-          <p className="text-xl text-gray-600 dark:text-gray-300">
-            İçerik API'den yüklenecek
-          </p>
+           <p className="text-xl text-gray-600 dark:text-gray-300">
+             İçerik API&apos;den yüklenecek
+           </p>
         </div>
       </div>
     </div>

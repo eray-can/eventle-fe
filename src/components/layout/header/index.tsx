@@ -2,6 +2,7 @@
 
 import { useTranslations } from 'next-intl';
 import { LanguageToggle } from '@/components/language-toggle';
+import Link from 'next/link';
 
 export function Header() {
   const t = useTranslations('Common');
@@ -16,18 +17,18 @@ export function Header() {
         </div>
 
         <nav className="hidden md:flex items-center space-x-6">
-          <a 
+          <Link 
             href="/" 
             className="text-sm font-medium transition-colors hover:text-primary"
           >
             {t('home')}
-          </a>
-          <a 
+          </Link>
+          <Link 
             href="/topluluk" 
             className="text-sm font-medium transition-colors hover:text-primary"
           >
             {t('community')}
-          </a>
+          </Link>
           <a 
             href="#" 
             className="text-sm font-medium transition-colors hover:text-primary"
