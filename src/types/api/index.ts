@@ -1,2 +1,2 @@
 // API types - Request/Response interfaces
-export * from './community';
+export * from './society';

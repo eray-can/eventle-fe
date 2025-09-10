@@ -7,6 +7,16 @@ const nextConfig: NextConfig = {
   env: {
     TZ: 'Europe/Istanbul',
   },
+  images: {
+    remotePatterns: [
+      {
+        protocol: 'https',
+        hostname: 'res.cloudinary.com',
+        port: '',
+        pathname: '/**',
+      },
+    ],
+  },
 };
 
 export default withNextIntl(nextConfig);
