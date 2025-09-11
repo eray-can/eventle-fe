@@ -1,10 +1,11 @@
-import type { Workshop, SocietyList, SocietyDetailInfo, WorkshopSession, WorkshopSessionGroup, WorkshopOwner } from '@/types/domain';
+import type { Workshop, SocietyList, SocietyDetailInfo, WorkshopSession, WorkshopSessionGroup, WorkshopOwner, SessionDetail } from '@/types/domain';
 import type {
   GetAvailableSeansItemsResponse,
   GetSocietyDetailResponse,
   SeansItem,
   SeansDateGroup,
-  WorkshopOwner as ApiWorkshopOwner
+  WorkshopOwner as ApiWorkshopOwner,
+  SessionDetailData
 } from '@/types/api';
 import type { WorkshopItem } from '@/types/api';
 
@@ -109,5 +110,52 @@ export const mapSocietyDetail = (workshop: GetSocietyDetailResponse['response'])
       email: '',
       username: 'unknown'
     },
+  };
+};
+
+export const mapSessionDetail = (session: SessionDetailData): SessionDetail => {
+  console.log('Mapping session detail:', JSON.stringify(session, null, 2));
+  
+  if (!session) {
+    throw new Error('Session data is undefined');
+  }
+  
+  if (!session.id) {
+    console.error('Session ID bulunamadı:', session);
+    throw new Error('Session ID bulunamadı');
+  }
+
+  return {
+    id: session.id,
+    date: session.workshop_date || '',
+    startTime: session.start_time || '',
+    endTime: session.end_time || '',
+    name: session.workshop_name || '',
+    categoryName: session.category_name || '',
+    relatedCategory: session.related_category || '',
+    attendedCount: session.attended || 0,
+    price: session.price ? parseFloat(session.price) : 0,
+    location: session.location || '',
+    locationLat: session.location_lat || 0,
+    locationLng: session.location_lng || 0,
+    capacity: session.capacity || 0,
+    duration: session.duration || '',
+    image: session.workshop_image || '',
+    discountedPrice: session.discounted_price ? parseFloat(session.discounted_price) : undefined,
+    discountPercentage: session.discount_percentage ? parseFloat(session.discount_percentage) : undefined,
+    whatIsInPrice: session.what_is_in_price || undefined,
+    requirements: session.requirements || undefined,
+    description: session.workshop_description || '',
+    owner: session.user ? mapWorkshopOwner(session.user) : {
+      id: '',
+      profileImage: '',
+      fullName: 'Bilinmeyen',
+      phoneNumber: '',
+      email: '',
+      username: 'unknown'
+    },
+    isOneTimeTicket: session.is_one_time_ticket || false,
+    isEligibleToBuy: session.is_eligible_to_buy || false,
+    additionalLink: session.additional_link || undefined,
   };
 };

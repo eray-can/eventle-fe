@@ -94,3 +94,30 @@ export interface SocietyDetailInfo {
   sessionGroups: WorkshopSessionGroup[];
   owner: WorkshopOwner;
 }
+
+export interface SessionDetail {
+  id: number;
+  date: string;
+  startTime: string;
+  endTime: string;
+  name: string;
+  categoryName: string;
+  relatedCategory: string;
+  attendedCount: number;
+  price: number;
+  location: string;
+  locationLat: number;
+  locationLng: number;
+  capacity: number;
+  duration: string;
+  image: string;
+  discountedPrice?: number;
+  discountPercentage?: number;
+  whatIsInPrice?: string;
+  requirements?: string;
+  description: string;
+  owner: WorkshopOwner;
+  isOneTimeTicket: boolean;
+  isEligibleToBuy: boolean;
+  additionalLink?: string;
+}

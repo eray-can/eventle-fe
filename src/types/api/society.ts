@@ -116,3 +116,40 @@ export interface GetSocietyDetailResponse {
   message: string;
   response: WorkshopDetail;
 }
+
+export interface GetSessionDetailRequest {
+  id: number;
+}
+
+export interface SessionDetailData {
+  id: number;
+  workshop_date: string;
+  start_time: string;
+  end_time: string;
+  workshop_name: string;
+  category_name: string;
+  related_category: string;
+  attended: number;
+  price: string;
+  location: string;
+  location_lat: number;
+  location_lng: number;
+  capacity: number;
+  duration: string;
+  workshop_image: string;
+  discounted_price: string | null;
+  discount_percentage: string | null;
+  what_is_in_price: string | null;
+  requirements: string | null;
+  workshop_description: string;
+  user: WorkshopOwner;
+  is_one_time_ticket: boolean;
+  is_eligible_to_buy: boolean;
+  additional_link: string;
+}
+
+export interface GetSessionDetailResponse {
+  status: boolean;
+  message: string;
+  response: SessionDetailData;
+}

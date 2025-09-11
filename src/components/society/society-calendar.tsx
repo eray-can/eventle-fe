@@ -19,6 +19,8 @@ export function SocietyCalendar({
     isCalendarOpen,
     selectedDate,
     selectedTimeSlot,
+    sessionDetail,
+    isLoadingSessionDetail,
     availableDates,
     availableTimeSlots,
     minDate,
@@ -86,6 +88,54 @@ export function SocietyCalendar({
             </div>
           )}
         </div>
+
+        {/* Session Detail Bilgileri */}
+        {selectedTimeSlot && (
+          <div className="space-y-4 pt-4 border-t border-gray-200 dark:border-gray-700">
+            {isLoadingSessionDetail ? (
+              <div className="text-center py-4">
+                <p className="text-gray-500 dark:text-gray-400">Detaylar yükleniyor...</p>
+              </div>
+            ) : sessionDetail ? (
+              <div className="space-y-4">
+                {/* Requirements */}
+                {sessionDetail.requirements && (
+                  <div>
+                    <h4 className="text-gray-400 text-sm mb-2">Gereksinimler</h4>
+                    <p className="text-white text-sm leading-relaxed">
+                      {sessionDetail.requirements}
+                    </p>
+                  </div>
+                )}
+
+                {/* What's Included */}
+                {sessionDetail.whatIsInPrice && (
+                  <div>
+                    <h4 className="text-gray-400 text-sm mb-2">Ücrete Dahil</h4>
+                    <p className="text-white text-sm leading-relaxed">
+                      {sessionDetail.whatIsInPrice}
+                    </p>
+                  </div>
+                )}
+
+                {/* Additional Link */}
+                {sessionDetail.additionalLink && (
+                  <div>
+                    <h4 className="text-gray-400 text-sm mb-2">Grup Linki</h4>
+                    <a 
+                      href={sessionDetail.additionalLink} 
+                      target="_blank" 
+                      rel="noopener noreferrer"
+                      className="text-purple-400 hover:text-purple-300 text-sm underline"
+                    >
+                      Gruba Katıl
+                    </a>
+                  </div>
+                )}
+              </div>
+            ) : null}
+          </div>
+        )}
       </div>
 
     </div>

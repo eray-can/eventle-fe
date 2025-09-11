@@ -1,5 +1,6 @@
 import * as React from 'react';
-import type { SocietyDetailInfo } from '@/types/domain';
+import type { SocietyDetailInfo, SessionDetail } from '@/types/domain';
+import { societyService } from '@/services/society/service';
 
 export interface TimeSlot {
   id: number;
@@ -17,6 +18,8 @@ export function useSocietyCalendar(societyDetail: SocietyDetailInfo) {
   const [isCalendarOpen, setIsCalendarOpen] = React.useState(false);
   const [selectedDate, setSelectedDate] = React.useState<Date | undefined>();
   const [selectedTimeSlot, setSelectedTimeSlot] = React.useState<TimeSlot | undefined>();
+  const [sessionDetail, setSessionDetail] = React.useState<SessionDetail | undefined>();
+  const [isLoadingSessionDetail, setIsLoadingSessionDetail] = React.useState(false);
 
   // Tarih formatını düzelt (DD-MM-YYYY -> YYYY-MM-DD)
   const parseApiDate = React.useCallback((dateString: string): Date => {
@@ -108,6 +111,50 @@ export function useSocietyCalendar(societyDetail: SocietyDetailInfo) {
     }
   }, [availableTimeSlots, selectedTimeSlot]);
 
+  // Refs to prevent duplicate calls
+  const loadingRef = React.useRef<number | null>(null);
+  const loadedSessionIdRef = React.useRef<number | null>(null);
+
+  // Seçili time slot değiştiğinde session detail'i getir
+  React.useEffect(() => {
+    if (!selectedTimeSlot) {
+      setSessionDetail(undefined);
+      loadingRef.current = null;
+      loadedSessionIdRef.current = null;
+      return;
+    }
+
+    // Aynı ID için zaten yükleme yapılıyorsa, tekrar yapma
+    if (loadingRef.current === selectedTimeSlot.id) {
+      return;
+    }
+
+    // Zaten aynı session detail yüklenmişse, tekrar yükleme
+    if (loadedSessionIdRef.current === selectedTimeSlot.id) {
+      return;
+    }
+
+    const loadSessionDetail = async () => {
+      loadingRef.current = selectedTimeSlot.id;
+      setIsLoadingSessionDetail(true);
+      
+      try {
+        const detail = await societyService.getSessionDetail({ id: selectedTimeSlot.id });
+        setSessionDetail(detail);
+        loadedSessionIdRef.current = selectedTimeSlot.id; // Mark as loaded
+      } catch (error) {
+        console.error('Session detail yüklenemedi:', error);
+        setSessionDetail(undefined);
+        loadedSessionIdRef.current = null;
+      } finally {
+        setIsLoadingSessionDetail(false);
+        loadingRef.current = null;
+      }
+    };
+
+    loadSessionDetail();
+  }, [selectedTimeSlot]); // sessionDetail dependency'sini kaldırdık
+
   // Tarih seçim handler'ı
   const handleDateSelect = React.useCallback((date: Date) => {
     setSelectedDate(prevDate => {
@@ -119,6 +166,8 @@ export function useSocietyCalendar(societyDetail: SocietyDetailInfo) {
       // Sadece farklı bir tarih seçilirse seans seçimini sıfırla
       if (!isSameDate) {
         setSelectedTimeSlot(undefined);
+        setSessionDetail(undefined);
+        loadedSessionIdRef.current = null; // Reset loaded session cache
       }
       
       return date;
@@ -164,6 +213,8 @@ export function useSocietyCalendar(societyDetail: SocietyDetailInfo) {
     isCalendarOpen,
     selectedDate,
     selectedTimeSlot,
+    sessionDetail,
+    isLoadingSessionDetail,
     availableDates,
     availableTimeSlots,
     minDate,
