@@ -1,7 +1,7 @@
-import type { Workshop, WorkshopList, WorkshopDetailInfo, WorkshopSession, WorkshopSessionGroup, WorkshopOwner } from '@/types/domain';
+import type { Workshop, SocietyList, SocietyDetailInfo, WorkshopSession, WorkshopSessionGroup, WorkshopOwner } from '@/types/domain';
 import type {
   GetAvailableSeansItemsResponse,
-  GetWorkshopDetailResponse,
+  GetSocietyDetailResponse,
   SeansItem,
   SeansDateGroup,
   WorkshopOwner as ApiWorkshopOwner
@@ -33,7 +33,7 @@ export const mapWorkshopItem = (item: WorkshopItem): Workshop => ({
   additionalLink: item.additional_link || undefined,
 });
 
-export const mapWorkshopList = (response: GetAvailableSeansItemsResponse, currentPage: number): WorkshopList => ({
+export const mapSocietyList = (response: GetAvailableSeansItemsResponse, currentPage: number): SocietyList => ({
   workshops: response.results.map(mapWorkshopItem),
   totalCount: response.count,
   hasNext: response.next !== null,
@@ -70,7 +70,7 @@ const mapWorkshopOwner = (owner: ApiWorkshopOwner): WorkshopOwner => ({
   username: owner.username,
 });
 
-export const mapWorkshopDetail = (workshop: GetWorkshopDetailResponse['response']): WorkshopDetailInfo => {
+export const mapSocietyDetail = (workshop: GetSocietyDetailResponse['response']): SocietyDetailInfo => {
   console.log('Workshop Data:', JSON.stringify(workshop, null, 2));
   
   if (!workshop.id) {

@@ -3,11 +3,11 @@ import Link from 'next/link';
 import type { Workshop } from '@/types/domain';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription, CardFooter } from '@/components/ui/card';
 
-interface WorkshopCardProps {
+interface SocietyCardProps {
   workshop: Workshop;
 }
 
-export function WorkshopCard({ workshop }: WorkshopCardProps) {
+export function SocietyCard({ workshop }: SocietyCardProps) {
   return (
     <Link href={`/topluluk/${workshop.id}`}>
       <Card className="overflow-hidden cursor-pointer group hover:shadow-lg transition-all duration-200">

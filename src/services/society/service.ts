@@ -1,32 +1,32 @@
 import { httpApiClient } from '../clients/api-client';
-import type { WorkshopList, WorkshopDetailInfo } from '@/types/domain';
+import type { SocietyList, SocietyDetailInfo } from '@/types/domain';
 import type {
   GetAvailableSeansItemsRequest,
   GetAvailableSeansItemsResponse,
-  GetWorkshopDetailRequest,
-  GetWorkshopDetailResponse
+  GetSocietyDetailRequest,
+  GetSocietyDetailResponse
 } from '@/types/api';
-import { mapWorkshopList, mapWorkshopDetail } from '@/mappers/society';
+import { mapSocietyList, mapSocietyDetail } from '@/mappers/society';
 
 const AVAILABLE_SEANS_ITEMS_ENDPOINT = 'api/society/public/available-seans-items/';
-const WORKSHOP_DETAIL_ENDPOINT = 'api/society/public-seans-to-one/';
+const SOCIETY_DETAIL_ENDPOINT = 'api/society/public-seans-to-one/';
 
 export class SocietyService {
 
-  async getAvailableSeansItems(request: GetAvailableSeansItemsRequest): Promise<WorkshopList> {
+  async getAvailableSeansItems(request: GetAvailableSeansItemsRequest): Promise<SocietyList> {
     const { page, page_size } = request;
     const url = `${AVAILABLE_SEANS_ITEMS_ENDPOINT}?page=${page}&page_size=${page_size}`;
 
     const response = await httpApiClient.get<GetAvailableSeansItemsResponse>(url);
-    return mapWorkshopList(response, page);
+    return mapSocietyList(response, page);
   }
 
-  async getWorkshopDetail(request: GetWorkshopDetailRequest): Promise<WorkshopDetailInfo> {
+  async getSocietyDetail(request: GetSocietyDetailRequest): Promise<SocietyDetailInfo> {
     const { id } = request;
-    const url = `${WORKSHOP_DETAIL_ENDPOINT}${id}/`;
+    const url = `${SOCIETY_DETAIL_ENDPOINT}${id}/`;
 
-    const workshopData = await httpApiClient.get<GetWorkshopDetailResponse['response']>(url);
-    return mapWorkshopDetail(workshopData);
+    const societyData = await httpApiClient.get<GetSocietyDetailResponse['response']>(url);
+    return mapSocietyDetail(societyData);
   }
 }
 

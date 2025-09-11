@@ -1,16 +1,15 @@
 import { societyService } from '@/services/society/service';
-import type { WorkshopList } from '@/types/domain';
-import Society from '@/components/society';
+import type { SocietyList } from '@/types/domain';
+import SocietyListComponent from '@/components/society/society-list';
 
-
-async function getInitialWorkshops(): Promise<WorkshopList> {
+async function getInitialSocieties(): Promise<SocietyList> {
   try {
     return await societyService.getAvailableSeansItems({
       page: 1,
       page_size: 100
     });
   } catch (error) {
-    console.error('Initial workshop listesi alınamadı:', error);
+    console.error('Initial society listesi alınamadı:', error);
     return {
       workshops: [],
       totalCount: 0,
@@ -22,7 +21,7 @@ async function getInitialWorkshops(): Promise<WorkshopList> {
 }
 
 export default async function CommunityPage() {
-  const initialData = await getInitialWorkshops();
+  const initialData = await getInitialSocieties();
 
   return (
     <div className="min-h-screen py-12" style={{ backgroundColor: '#111828' }}>
@@ -32,12 +31,12 @@ export default async function CommunityPage() {
             Topluluk
           </h1>
           <p className="text-xl text-gray-600 dark:text-gray-300 max-w-2xl mx-auto">
-            Mevcut workshop ve seansları keşfedin
+            Mevcut society ve seansları keşfedin
           </p>
         </div>
 
         <div className="mb-8">
-          <Society initialData={initialData} />
+          <SocietyListComponent initialData={initialData} />
         </div>
       </div>
     </div>

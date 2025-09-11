@@ -2,14 +2,14 @@
 
 import { usePagination } from '@/hooks';
 import { societyService } from '@/services/society/service';
-import type { Workshop, WorkshopList } from '@/types/domain';
-import { WorkshopCard } from './workshop-card';
+import type { Workshop, SocietyList } from '@/types/domain';
+import { SocietyCard } from './society-card';
 
 interface SocietyProps {
-  initialData: WorkshopList;
+  initialData: SocietyList;
 }
 
-export default function Society({ initialData }: SocietyProps) {
+export default function SocietyList({ initialData }: SocietyProps) {
   const {
     data: workshops,
     isLoading,
@@ -71,7 +71,7 @@ export default function Society({ initialData }: SocietyProps) {
       ) : (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
           {workshops.map((workshop) => (
-            <WorkshopCard key={workshop.id} workshop={workshop} />
+            <SocietyCard key={workshop.id} workshop={workshop} />
           ))}
         </div>
       )}

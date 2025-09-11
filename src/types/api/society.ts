@@ -52,7 +52,7 @@ export interface PaginatedResponse<T> {
 
 export type GetAvailableSeansItemsResponse = PaginatedResponse<WorkshopItem>;
 
-export interface GetWorkshopDetailRequest {
+export interface GetSocietyDetailRequest {
   id: number;
 }
 
@@ -111,7 +111,7 @@ export interface WorkshopDetail {
   owner_user: WorkshopOwner;
 }
 
-export interface GetWorkshopDetailResponse {
+export interface GetSocietyDetailResponse {
   status: boolean;
   message: string;
   response: WorkshopDetail;

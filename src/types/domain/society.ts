@@ -32,7 +32,7 @@ export interface Workshop {
   additionalLink?: string;
 }
 
-export interface WorkshopList {
+export interface SocietyList {
   workshops: Workshop[];
   totalCount: number;
   hasNext: boolean;
@@ -69,7 +69,7 @@ export interface WorkshopOwner {
   username: string;
 }
 
-export interface WorkshopDetailInfo {
+export interface SocietyDetailInfo {
   id: number;
   categoryId: number;
   name: string;
