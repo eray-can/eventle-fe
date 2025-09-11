@@ -1,52 +1,32 @@
 import { httpApiClient } from '../clients/api-client';
-import type { Workshop, WorkshopList } from '@/types/domain';
+import type { WorkshopList, WorkshopDetailInfo } from '@/types/domain';
 import type {
   GetAvailableSeansItemsRequest,
-  GetAvailableSeansItemsResponse
+  GetAvailableSeansItemsResponse,
+  GetWorkshopDetailRequest,
+  GetWorkshopDetailResponse
 } from '@/types/api';
-import type { WorkshopItem } from '@/types/api';
+import { mapWorkshopList, mapWorkshopDetail } from '@/mappers/society';
 
-const mapWorkshopItem = (item: WorkshopItem): Workshop => ({
-  id: item.id,
-  name: item.workshop_name,
-  date: item.workshop_date,
-  startTime: item.start_time,
-  endTime: item.end_time,
-  duration: item.duration,
-  location: item.location,
-  capacity: item.capacity,
-  attendedCount: item.attended,
-  price: parseFloat(item.price),
-  discountedPrice: item.discounted_price ? parseFloat(item.discounted_price) : undefined,
-  discountPercentage: item.discount_percentage ? parseFloat(item.discount_percentage) : undefined,
-  image: item.workshop_image,
-  category: {
-    name: item.category.name,
-    image: item.category.image,
-    color: item.category.color,
-  },
-  categoryName: item.category_name,
-  isEligibleToBuy: item.is_eligible_to_buy,
-  goingPersonCount: item.going_person_count || undefined,
-  additionalLink: item.additional_link || undefined,
-});
-
-const mapWorkshopList = (response: GetAvailableSeansItemsResponse, currentPage: number): WorkshopList => ({
-  workshops: response.results.map(mapWorkshopItem),
-  totalCount: response.count,
-  hasNext: response.next !== null,
-  hasPrevious: response.previous !== null,
-  currentPage,
-});
+const AVAILABLE_SEANS_ITEMS_ENDPOINT = 'api/society/public/available-seans-items/';
+const WORKSHOP_DETAIL_ENDPOINT = 'api/society/public-seans-to-one/';
 
 export class SocietyService {
 
   async getAvailableSeansItems(request: GetAvailableSeansItemsRequest): Promise<WorkshopList> {
     const { page, page_size } = request;
-    const url = `api/society/public/available-seans-items/?page=${page}&page_size=${page_size}`;
+    const url = `${AVAILABLE_SEANS_ITEMS_ENDPOINT}?page=${page}&page_size=${page_size}`;
 
     const response = await httpApiClient.get<GetAvailableSeansItemsResponse>(url);
     return mapWorkshopList(response, page);
+  }
+
+  async getWorkshopDetail(request: GetWorkshopDetailRequest): Promise<WorkshopDetailInfo> {
+    const { id } = request;
+    const url = `${WORKSHOP_DETAIL_ENDPOINT}${id}/`;
+
+    const workshopData = await httpApiClient.get<GetWorkshopDetailResponse['response']>(url);
+    return mapWorkshopDetail(workshopData);
   }
 }
 

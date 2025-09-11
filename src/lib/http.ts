@@ -24,7 +24,7 @@ class ApiClient {
 
     // Simple fetch wrapper - domain independent
     const fullUrl = `${this.baseURL}${url}`;
-
+    console.log(fullUrl)
     try {
       const response = await fetch(fullUrl, {
         method,

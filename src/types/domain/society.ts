@@ -39,3 +39,58 @@ export interface WorkshopList {
   hasPrevious: boolean;
   currentPage: number;
 }
+
+export interface WorkshopSession {
+  id: number;
+  date: string;
+  startTime: string;
+  endTime: string;
+  price: number;
+  discountPercentage?: number;
+  discountedPrice?: number;
+  capacity: number;
+  attendedCount: number;
+  isRestricted: boolean;
+  isAvailable: boolean;
+  isValid: boolean;
+}
+
+export interface WorkshopSessionGroup {
+  date: string;
+  sessions: WorkshopSession[];
+}
+
+export interface WorkshopOwner {
+  id: string;
+  profileImage: string;
+  fullName: string;
+  phoneNumber: string;
+  email: string;
+  username: string;
+}
+
+export interface WorkshopDetailInfo {
+  id: number;
+  categoryId: number;
+  name: string;
+  description: string;
+  price?: number;
+  discountPercentage?: number;
+  discountedPrice?: number;
+  location: string;
+  image: string;
+  capacity?: number;
+  whatIsInPrice?: string;
+  requirements?: string;
+  duration: string;
+  ownerId: number;
+  locationLat: number;
+  locationLng: number;
+  isOneTimeTicket: boolean;
+  isRepeated: boolean;
+  startDate: string;
+  endDate: string;
+  whichDays: string;
+  sessionGroups: WorkshopSessionGroup[];
+  owner: WorkshopOwner;
+}
