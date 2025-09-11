@@ -25,7 +25,7 @@ export default async function CommunityPage() {
   const initialData = await getInitialWorkshops();
 
   return (
-    <div className="bg-gradient-to-br from-purple-50 to-blue-50 dark:from-gray-900 dark:to-gray-800 min-h-screen py-12">
+    <div className="min-h-screen py-12" style={{ backgroundColor: '#111828' }}>
       <div className="container mx-auto px-4">
         <div className="text-center mb-12">
           <h1 className="text-4xl font-bold text-gray-900 dark:text-white mb-4">

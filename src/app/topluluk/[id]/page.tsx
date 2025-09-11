@@ -24,7 +24,7 @@ export default async function CommunityDetailPage({ params }: CommunityDetailPag
   } catch (error) {
     console.error('Workshop detayları yüklenemedi:', error);
     return (
-      <div className="bg-gradient-to-br from-purple-50 to-blue-50 dark:from-gray-900 dark:to-gray-800 py-12">
+      <div className="py-12" style={{ backgroundColor: '#111828' }}>
         <div className="container mx-auto px-4">
           <div className="text-center py-20">
             <h1 className="text-4xl font-bold text-gray-900 dark:text-white mb-4">
@@ -40,7 +40,7 @@ export default async function CommunityDetailPage({ params }: CommunityDetailPag
   }
 
   return (
-    <div className="bg-gradient-to-br from-purple-50 to-blue-50 dark:from-gray-900 dark:to-gray-800 py-12">
+    <div className="py-12" style={{ backgroundColor: '#111828' }}>
       <div className="container mx-auto px-4">
         <div className="mb-6">
           <Link 

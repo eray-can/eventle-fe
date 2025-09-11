@@ -76,6 +76,6 @@
 }
 
 body {
-  background-color: hsl(var(--background));
+  background-color: #111828;
   color: hsl(var(--foreground));
 }
