@@ -1,9 +1,9 @@
-import { ArrowLeft, MapPin, Calendar } from 'lucide-react';
-import Link from 'next/link';
+import { MapPin } from 'lucide-react';
 import Image from 'next/image';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { societyService } from '@/services/society/service';
+import { SocietyCalendar } from '@/components/society/society-calendar';
 
 interface CommunityDetailPageProps {
   params: Promise<{
@@ -44,7 +44,7 @@ export default async function CommunityDetailPage({ params }: CommunityDetailPag
   return (
     <div className="min-h-screen bg-gray-900">
       {/* Mobile Header with Hero Image - Hidden on Desktop */}
-      <div className="relative lg:hidden">
+      <div className="lg:hidden">
         {/* Hero Image */}
         <div className="relative h-80 md:h-96">
           <Image
@@ -54,41 +54,26 @@ export default async function CommunityDetailPage({ params }: CommunityDetailPag
             className="object-cover"
             priority
           />
-          <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
+          <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent" />
 
-          {/* Navigation Buttons */}
-          <div className="absolute top-6 left-4 right-4 flex justify-between items-center">
-          <Link
-            href="/topluluk"
-              className="w-10 h-10 bg-black/30 backdrop-blur-sm rounded-full flex items-center justify-center text-white hover:bg-black/50 transition-colors"
-          >
-              <ArrowLeft className="h-5 w-5" />
-          </Link>
-            <button className="w-10 h-10 bg-black/30 backdrop-blur-sm rounded-full flex items-center justify-center text-white hover:bg-black/50 transition-colors">
-              <svg className="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.367 2.684 3 3 0 00-5.367-2.684z" />
-              </svg>
-            </button>
-          </div>
-
-          {/* Category Badge */}
-          <div className="absolute top-20 left-4">
+          {/* Category Badge - Sol Alt */}
+          <div className="absolute bottom-4 left-4">
             <div className="px-3 py-1 bg-purple-600 rounded-full text-white text-sm font-medium">
               Workshop & Eğitim
             </div>
           </div>
+        </div>
 
-          {/* Title Overlay */}
-          <div className="absolute bottom-0 left-0 right-0 p-4">
-            <h1 className="text-2xl md:text-4xl font-bold text-white mb-2 leading-tight">
-              {societyDetail.name}
-            </h1>
-          </div>
+        {/* Title - Resmin Altında */}
+        <div className="px-4 py-4">
+          <h1 className="text-2xl md:text-4xl font-bold text-white leading-tight">
+            {societyDetail.name}
+          </h1>
         </div>
       </div>
 
       {/* Mobile Content */}
-      <div className="px-4 py-6 space-y-6 lg:hidden">
+      <div className="px-4 py-6 space-y-6 lg:hidden pb-32">
         {/* Event Owner */}
         <div className="flex items-center justify-between">
           <div>
@@ -141,30 +126,6 @@ export default async function CommunityDetailPage({ params }: CommunityDetailPag
             </button>
           </div>
 
-          {/* Event Time */}
-          <div className="bg-gray-800 rounded-lg p-4">
-            <h4 className="text-white font-medium mb-3">Etkinlik Zamanı</h4>
-            <div className="space-y-3">
-              {societyDetail.sessionGroups.map((group) =>
-                group.sessions.map((session) => (
-                  <div key={session.id} className="flex items-center justify-between">
-                    <div className="flex items-center gap-3">
-                      <Calendar className="h-5 w-5 text-gray-400" />
-                      <div>
-                        <div className="text-white font-medium">Etkinlik Tarihi</div>
-                        <div className="text-gray-400 text-sm">
-                          {group.date.split('-').reverse().join('.')}
-                        </div>
-                      </div>
-                    </div>
-                    <div className="text-right">
-                      <div className="text-white font-medium">{session.startTime.slice(0, 5)}</div>
-                    </div>
-                  </div>
-                ))
-              )}
-            </div>
-          </div>
 
           {/* Requirements */}
           {societyDetail.requirements && (
@@ -181,6 +142,12 @@ export default async function CommunityDetailPage({ params }: CommunityDetailPag
               <p className="text-white">{societyDetail.whatIsInPrice}</p>
             </div>
           )}
+        </div>
+
+        {/* Mobile Calendar Section */}
+        <div>
+          <h3 className="text-white font-medium text-lg mb-4">Tarih ve Saat Seçin</h3>
+          <SocietyCalendar societyDetail={societyDetail} />
         </div>
       </div>
 
@@ -229,16 +196,6 @@ export default async function CommunityDetailPage({ params }: CommunityDetailPag
       {/* Desktop Layout - Hidden on Mobile */}
       <div className="hidden lg:block">
         <div className="container mx-auto px-4 py-8">
-          {/* Desktop Navigation */}
-          <div className="mb-8">
-            <Link
-              href="/topluluk"
-              className="inline-flex items-center gap-2 text-gray-400 hover:text-white transition-colors"
-            >
-              <ArrowLeft className="h-5 w-5" />
-              Topluluk
-            </Link>
-          </div>
 
           {/* Desktop Main Content - Side by Side Layout */}
           <div className="grid grid-cols-2 gap-12 mb-8">
@@ -252,7 +209,8 @@ export default async function CommunityDetailPage({ params }: CommunityDetailPag
                   className="object-cover"
                   priority
                 />
-                <div className="absolute top-4 left-4">
+                {/* Category Badge - Sol Alt */}
+                <div className="absolute bottom-4 left-4">
                   <div className="px-4 py-2 bg-purple-600 rounded-full text-white text-sm font-medium">
                     Workshop & Eğitim
                   </div>
@@ -344,92 +302,51 @@ export default async function CommunityDetailPage({ params }: CommunityDetailPag
                 </CardContent>
               </Card>
 
-              {/* Event Time */}
-              <Card className="bg-gray-800 border-gray-700">
-                <CardHeader>
-                  <CardTitle className="text-white font-medium">Etkinlik Zamanı</CardTitle>
-                </CardHeader>
-                <CardContent className="space-y-3">
-                  {societyDetail.sessionGroups.map((group) =>
-                    group.sessions.map((session) => (
-                      <div key={session.id} className="flex items-center justify-between py-2">
-                        <div className="flex items-center gap-3">
-                          <Calendar className="h-5 w-5 text-gray-400" />
-                          <div>
-                            <div className="text-white font-medium">Etkinlik Tarihi</div>
-                            <div className="text-gray-400 text-sm">
-                              {group.date.split('-').reverse().join('.')}
-                            </div>
-                          </div>
-                        </div>
-                        <div className="text-right">
-                          <div className="text-white font-medium">{session.startTime.slice(0, 5)}</div>
-                        </div>
-                      </div>
-                    ))
-                  )}
-                </CardContent>
-              </Card>
 
-              {/* Desktop Tickets Section */}
-              <Card className="bg-white/5 border border-gray-700/50 backdrop-blur-sm">
-                <CardHeader className="pb-4">
-                  <CardTitle className="text-white text-xl font-bold">Biletler</CardTitle>
-                </CardHeader>
-                <CardContent className="space-y-4">
-                  {societyDetail.sessionGroups.map((group) =>
-                    group.sessions.map((session) => (
-                      <div
-                        key={session.id}
-                        className="border border-gray-600/50 rounded-lg p-4 hover:border-gray-500/50 transition-colors"
-                      >
-                        {/* Date and Time */}
-                        <div className="flex items-center gap-3 mb-3">
-                          <div className="text-white font-medium">
-                            {group.date.split('-').reverse().join('.')}
-                          </div>
-                          <div className="w-1 h-1 bg-gray-500 rounded-full"></div>
-                          <div className="text-white font-medium">
-                            {session.startTime.slice(0, 5)}
-                          </div>
-                        </div>
+              {/* Desktop Calendar Section */}
+              <SocietyCalendar societyDetail={societyDetail} />
 
-                        {/* Price and Status */}
-                        <div className="flex items-center justify-between">
-                          {session.isAvailable && session.isValid ? (
-                            <>
-                              <div>
-                                {session.discountedPrice ? (
-                                  <div>
-                                    <div className="text-xl font-bold text-white">
-                                      {session.discountedPrice.toLocaleString()} ₺
-                                    </div>
-                                    <div className="line-through text-gray-500 text-sm">
-                                      {session.price.toLocaleString()} ₺
-                                    </div>
-                                  </div>
-                                ) : (
-                                  <div className="text-xl font-bold text-white">
-                                    {session.price.toLocaleString()} ₺
-                                  </div>
-                                )}
-                              </div>
-                              <Button className="bg-orange-600 hover:bg-orange-700 text-white px-6 py-2 rounded-lg font-semibold">
-                                SATIN AL
-                              </Button>
-                            </>
-                          ) : (
-                            <div className="w-full text-center">
-                              <div className="text-red-400 font-bold mb-2">Tükendi</div>
-                              <Button disabled className="w-full bg-gray-700 text-gray-400 cursor-not-allowed">
-                                Tükendi
-                              </Button>
-                            </div>
-                          )}
+              {/* Desktop Purchase Section */}
+              <Card className="bg-gray-900/50 border-gray-700">
+                <CardContent className="p-6">
+                  <div className="flex items-center justify-between">
+                    <div>
+                      {societyDetail.sessionGroups[0]?.sessions[0]?.discountedPrice ? (
+                        <div>
+                          <div className="text-3xl font-bold text-white">
+                            {societyDetail.sessionGroups[0].sessions[0].discountedPrice.toLocaleString()} ₺
+                          </div>
+                          <div className="line-through text-gray-500">
+                            {societyDetail.sessionGroups[0].sessions[0].price.toLocaleString()} ₺
+                          </div>
                         </div>
+                      ) : (
+                        <div className="text-3xl font-bold text-white">
+                          {societyDetail.sessionGroups[0]?.sessions[0]?.price.toLocaleString()} ₺
+                        </div>
+                      )}
+                    </div>
+                    <div className="flex items-center gap-4">
+                      <div className="flex items-center border border-gray-600 rounded-lg">
+                        <button className="w-12 h-12 flex items-center justify-center text-white hover:bg-gray-700 rounded-l-lg">
+                          <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M20 12H4" />
+                          </svg>
+                        </button>
+                        <div className="w-16 h-12 flex items-center justify-center text-white font-medium border-x border-gray-600">
+                          1
+                        </div>
+                        <button className="w-12 h-12 flex items-center justify-center text-white hover:bg-gray-700 rounded-r-lg">
+                          <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
+                          </svg>
+                        </button>
                       </div>
-                    ))
-                  )}
+                      <Button className="bg-purple-600 hover:bg-purple-700 text-white px-8 py-3 text-lg font-semibold">
+                        Satın Al
+                      </Button>
+                    </div>
+                  </div>
                 </CardContent>
               </Card>
             </div>
