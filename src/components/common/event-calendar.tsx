@@ -3,18 +3,24 @@
 import { Calendar, ChevronDown } from 'lucide-react';
 import { Calendar as CalendarComponent } from '@/components/ui/calendar';
 import { TimeSlotPicker } from '@/components/ui/time-slot-picker';
-import { useSocietyCalendar } from '@/hooks';
+import { useEventCalendar } from '@/hooks/common/use-event-calendar';
 import type { SocietyDetailInfo } from '@/types/domain';
 
-interface SocietyCalendarProps {
-  societyDetail: SocietyDetailInfo;
+interface EventCalendarProps {
+  eventDetail?: SocietyDetailInfo;
+  sessionGroups?: unknown[];
+  eventId?: number;
+  useWorkshopService?: boolean;
   className?: string;
 }
 
-export function SocietyCalendar({
-  societyDetail,
+export function EventCalendar({
+  eventDetail,
+  sessionGroups,
+  eventId,
+  useWorkshopService,
   className
-}: SocietyCalendarProps) {
+}: EventCalendarProps) {
   const {
     isCalendarOpen,
     selectedDate,
@@ -28,7 +34,10 @@ export function SocietyCalendar({
     handleDateSelect,
     toggleCalendar,
     handleTimeSlotSelect,
-  } = useSocietyCalendar(societyDetail);
+  } = useEventCalendar(eventDetail || (sessionGroups && eventId ? {
+    id: eventId,
+    sessionGroups: sessionGroups,
+  } as SocietyDetailInfo : undefined), useWorkshopService);
 
   return (
     <div className={className}>

@@ -2,10 +2,10 @@ import { MapPin } from 'lucide-react';
 import Image from 'next/image';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { societyService } from '@/services/society/service';
+import { workshopService } from '@/services/workshop/service';
 import { EventCalendar } from '@/components/common/event-calendar';
 
-interface CommunityDetailPageProps {
+interface WorkshopDetailPageProps {
   params: Promise<{
     id: string;
   }>;
@@ -15,16 +15,16 @@ interface CommunityDetailPageProps {
 //TODO mobile ve desktop tasarımları birbirinden ayrı gidecek gibi duruyor. iyi bir ayrıştırmaya gitmek lazım
 // geçici olarak boyle :D
 
-export default async function CommunityDetailPage({ params }: CommunityDetailPageProps) {
-  const { id: communityId } = await params;
+export default async function WorkshopDetailPage({ params }: WorkshopDetailPageProps) {
+  const { id: workshopId } = await params;
 
-  let societyDetail;
+  let workshopDetail;
   try {
-    societyDetail = await societyService.getSocietyDetail({
-      id: parseInt(communityId)
+    workshopDetail = await workshopService.getWorkshopDetail({
+      id: parseInt(workshopId)
     });
   } catch (error) {
-    console.error('Society detayları yüklenemedi:', error);
+    console.error('Workshop detayları yüklenemedi:', error);
     return (
       <div className="py-12 bg-background">
         <div className="container mx-auto px-4">
@@ -33,7 +33,7 @@ export default async function CommunityDetailPage({ params }: CommunityDetailPag
               Hata Oluştu
             </h1>
             <p className="text-xl text-gray-600 dark:text-gray-300">
-              Society detayları yüklenemedi
+              Workshop detayları yüklenemedi
             </p>
           </div>
         </div>
@@ -48,8 +48,8 @@ export default async function CommunityDetailPage({ params }: CommunityDetailPag
         {/* Hero Image */}
         <div className="relative h-80 md:h-96">
           <Image
-            src={societyDetail.image}
-            alt={societyDetail.name}
+            src={workshopDetail.image}
+            alt={workshopDetail.name}
             fill
             className="object-cover"
             priority
@@ -67,7 +67,7 @@ export default async function CommunityDetailPage({ params }: CommunityDetailPag
         {/* Title - Resmin Altında */}
         <div className="px-4 py-4">
           <h1 className="text-2xl md:text-4xl font-bold text-white leading-tight">
-            {societyDetail.name}
+            {workshopDetail.name}
           </h1>
         </div>
       </div>
@@ -81,15 +81,15 @@ export default async function CommunityDetailPage({ params }: CommunityDetailPag
             <div className="flex items-center gap-3 mt-2">
               <div className="relative h-12 w-12 rounded-full overflow-hidden">
                 <Image
-                  src={societyDetail.owner.profileImage}
-                  alt={societyDetail.owner.fullName}
+                  src={workshopDetail.owner.profileImage}
+                  alt={workshopDetail.owner.fullName}
                   fill
                   className="object-cover"
                 />
               </div>
               <div>
-                <h4 className="text-white font-medium">{societyDetail.owner.fullName}</h4>
-                <p className="text-gray-400 text-sm">{societyDetail.owner.username}</p>
+                <h4 className="text-white font-medium">{workshopDetail.owner.fullName}</h4>
+                <p className="text-gray-400 text-sm">{workshopDetail.owner.username}</p>
               </div>
             </div>
           </div>
@@ -102,7 +102,7 @@ export default async function CommunityDetailPage({ params }: CommunityDetailPag
         <div>
           <h3 className="text-white font-medium text-lg mb-3">Etkinlik Açıklaması</h3>
           <p className="text-gray-300 leading-relaxed">
-            {societyDetail.description}
+            {workshopDetail.description}
           </p>
         </div>
 
@@ -113,13 +113,13 @@ export default async function CommunityDetailPage({ params }: CommunityDetailPag
           {/* Duration */}
           <div>
             <h4 className="text-gray-400 text-sm">Etkinlik Süresi</h4>
-            <p className="text-white">{societyDetail.duration}</p>
+            <p className="text-white">{workshopDetail.duration}</p>
           </div>
 
           {/* Location */}
           <div>
             <h4 className="text-gray-400 text-sm">Konum</h4>
-            <p className="text-white">{societyDetail.location}</p>
+            <p className="text-white">{workshopDetail.location}</p>
             <button className="text-purple-400 text-sm mt-1 flex items-center gap-1">
               <MapPin className="h-4 w-4" />
               Haritada Gör
@@ -128,18 +128,18 @@ export default async function CommunityDetailPage({ params }: CommunityDetailPag
 
 
           {/* Requirements */}
-          {societyDetail.requirements && (
+          {workshopDetail.requirements && (
             <div>
               <h4 className="text-gray-400 text-sm">Gereksinimler</h4>
-              <p className="text-white">{societyDetail.requirements}</p>
+              <p className="text-white">{workshopDetail.requirements}</p>
             </div>
           )}
 
           {/* What's Included */}
-          {societyDetail.whatIsInPrice && (
+          {workshopDetail.whatIsInPrice && (
             <div>
               <h4 className="text-gray-400 text-sm">Ücrете Dahil</h4>
-              <p className="text-white">{societyDetail.whatIsInPrice}</p>
+              <p className="text-white">{workshopDetail.whatIsInPrice}</p>
             </div>
           )}
         </div>
@@ -147,7 +147,7 @@ export default async function CommunityDetailPage({ params }: CommunityDetailPag
         {/* Mobile Calendar Section */}
         <div>
           <h3 className="text-white font-medium text-lg mb-4">Tarih ve Saat Seçin</h3>
-          <EventCalendar eventDetail={societyDetail} />
+          <EventCalendar eventDetail={workshopDetail} useWorkshopService={true} />
         </div>
       </div>
 
@@ -155,18 +155,18 @@ export default async function CommunityDetailPage({ params }: CommunityDetailPag
       <div className="lg:hidden fixed bottom-0 left-0 right-0 bg-gray-800 border-t border-gray-700 p-4 z-50">
         <div className="flex items-center justify-between mb-3">
           <div>
-            {societyDetail.sessionGroups[0]?.sessions[0]?.discountedPrice ? (
+            {workshopDetail.sessionGroups[0]?.sessions[0]?.discountedPrice ? (
               <div>
                 <div className="text-2xl font-bold text-white">
-                  {societyDetail.sessionGroups[0].sessions[0].discountedPrice.toLocaleString()} ₺
+                  {workshopDetail.sessionGroups[0].sessions[0].discountedPrice.toLocaleString()} ₺
                 </div>
                 <div className="line-through text-gray-500 text-sm">
-                  {societyDetail.sessionGroups[0].sessions[0].price.toLocaleString()} ₺
+                  {workshopDetail.sessionGroups[0].sessions[0].price.toLocaleString()} ₺
                 </div>
               </div>
             ) : (
               <div className="text-2xl font-bold text-white">
-                {societyDetail.sessionGroups[0]?.sessions[0]?.price.toLocaleString()} ₺
+                {workshopDetail.sessionGroups[0]?.sessions[0]?.price.toLocaleString()} ₺
               </div>
             )}
           </div>
@@ -203,8 +203,8 @@ export default async function CommunityDetailPage({ params }: CommunityDetailPag
             <div className="space-y-6">
               <div className="relative aspect-[4/3] rounded-2xl overflow-hidden">
                 <Image
-                  src={societyDetail.image}
-                  alt={societyDetail.name}
+                  src={workshopDetail.image}
+                  alt={workshopDetail.name}
                   fill
                   className="object-cover"
                   priority
@@ -225,15 +225,15 @@ export default async function CommunityDetailPage({ params }: CommunityDetailPag
                     <div className="flex items-center gap-4">
                       <div className="relative h-16 w-16 rounded-full overflow-hidden">
                         <Image
-                          src={societyDetail.owner.profileImage}
-                          alt={societyDetail.owner.fullName}
+                          src={workshopDetail.owner.profileImage}
+                          alt={workshopDetail.owner.fullName}
                           fill
                           className="object-cover"
                         />
                       </div>
                       <div>
-                        <h4 className="text-white font-medium text-lg">{societyDetail.owner.fullName}</h4>
-                        <p className="text-gray-400">{societyDetail.owner.username}</p>
+                        <h4 className="text-white font-medium text-lg">{workshopDetail.owner.fullName}</h4>
+                        <p className="text-gray-400">{workshopDetail.owner.username}</p>
                       </div>
                     </div>
                     <Button className="bg-purple-600 hover:bg-purple-700 text-white">
@@ -249,11 +249,11 @@ export default async function CommunityDetailPage({ params }: CommunityDetailPag
               {/* Title and Description */}
               <div>
                 <h1 className="text-4xl font-bold text-white mb-6 leading-tight">
-                  {societyDetail.name}
+                  {workshopDetail.name}
                 </h1>
                 <div className="prose prose-lg prose-invert max-w-none">
                   <p className="text-gray-300 leading-relaxed text-lg">
-                    {societyDetail.description}
+                    {workshopDetail.description}
                   </p>
                 </div>
               </div>
@@ -268,14 +268,14 @@ export default async function CommunityDetailPage({ params }: CommunityDetailPag
                   <div className="grid grid-cols-3 gap-4">
                     <div>
                       <h4 className="text-gray-400 text-sm mb-1">Etkinlik Süresi</h4>
-                      <p className="text-white font-medium">{societyDetail.duration}</p>
+                      <p className="text-white font-medium">{workshopDetail.duration}</p>
                     </div>
 
                     {/* Location */}
                     <div className="col-span-2">
                       <h4 className="text-gray-400 text-sm mb-1">Konum</h4>
                       <div className="flex items-center justify-between">
-                        <p className="text-white font-medium">{societyDetail.location}</p>
+                        <p className="text-white font-medium">{workshopDetail.location}</p>
                         <button className="text-purple-400 text-sm flex items-center gap-1 hover:text-purple-300 transition-colors">
                           <MapPin className="h-4 w-4" />
                           Haritada Gör
@@ -285,18 +285,18 @@ export default async function CommunityDetailPage({ params }: CommunityDetailPag
                   </div>
 
                   {/* Requirements */}
-                  {societyDetail.requirements && (
+                  {workshopDetail.requirements && (
                     <div>
                       <h4 className="text-gray-400 text-sm mb-2">Gereksinimler</h4>
-                      <p className="text-white">{societyDetail.requirements}</p>
+                      <p className="text-white">{workshopDetail.requirements}</p>
                     </div>
                   )}
 
                   {/* What's Included */}
-                  {societyDetail.whatIsInPrice && (
+                  {workshopDetail.whatIsInPrice && (
                     <div>
                       <h4 className="text-gray-400 text-sm mb-2">Ücrете Dahil</h4>
-                      <p className="text-white">{societyDetail.whatIsInPrice}</p>
+                      <p className="text-white">{workshopDetail.whatIsInPrice}</p>
                     </div>
                   )}
                 </CardContent>
@@ -304,25 +304,25 @@ export default async function CommunityDetailPage({ params }: CommunityDetailPag
 
 
               {/* Desktop Calendar Section */}
-              <EventCalendar eventDetail={societyDetail} />
+              <EventCalendar eventDetail={workshopDetail} useWorkshopService={true} />
 
               {/* Desktop Purchase Section */}
               <Card className="bg-gray-900/50 border-gray-700">
                 <CardContent className="p-6">
                   <div className="flex items-center justify-between">
                     <div>
-                      {societyDetail.sessionGroups[0]?.sessions[0]?.discountedPrice ? (
+                      {workshopDetail.sessionGroups[0]?.sessions[0]?.discountedPrice ? (
                         <div>
                           <div className="text-3xl font-bold text-white">
-                            {societyDetail.sessionGroups[0].sessions[0].discountedPrice.toLocaleString()} ₺
+                            {workshopDetail.sessionGroups[0].sessions[0].discountedPrice.toLocaleString()} ₺
                           </div>
                           <div className="line-through text-gray-500">
-                            {societyDetail.sessionGroups[0].sessions[0].price.toLocaleString()} ₺
+                            {workshopDetail.sessionGroups[0].sessions[0].price.toLocaleString()} ₺
                           </div>
                         </div>
                       ) : (
                         <div className="text-3xl font-bold text-white">
-                          {societyDetail.sessionGroups[0]?.sessions[0]?.price.toLocaleString()} ₺
+                          {workshopDetail.sessionGroups[0]?.sessions[0]?.price.toLocaleString()} ₺
                         </div>
                       )}
                     </div>
