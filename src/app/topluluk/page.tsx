@@ -1,6 +1,6 @@
 import { societyService } from '@/services/society/service';
 import type { SocietyList } from '@/types/domain';
-import SocietyListComponent from '@/components/society/society-list';
+import SocietyPageClient from '@/components/society/society-page-client';
 
 async function getInitialSocieties(): Promise<SocietyList> {
   try {
@@ -24,8 +24,8 @@ export default async function CommunityPage() {
   const initialData = await getInitialSocieties();
 
   return (
-    <div className="min-h-screen py-12" style={{ backgroundColor: '#111828' }}>
-      <div className="container mx-auto px-4">
+    <div className="min-h-screen py-12 overflow-x-hidden" style={{ backgroundColor: '#111828' }}>
+      <div className="w-full mx-auto px-4 sm:px-6">
         <div className="text-center mb-12">
           <h1 className="text-4xl font-bold text-gray-900 dark:text-white mb-4">
             Topluluk
@@ -35,9 +35,7 @@ export default async function CommunityPage() {
           </p>
         </div>
 
-        <div className="mb-8">
-          <SocietyListComponent initialData={initialData} />
-        </div>
+        <SocietyPageClient initialData={initialData} />
       </div>
     </div>
   );

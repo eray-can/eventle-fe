@@ -3,13 +3,15 @@
 import { usePagination } from '@/hooks';
 import { societyService } from '@/services/society/service';
 import type { Workshop, SocietyList } from '@/types/domain';
+import type { FilterValues } from './society-filters';
 import { SocietyCard } from './society-card';
 
 interface SocietyProps {
   initialData: SocietyList;
+  filters?: FilterValues;
 }
 
-export default function SocietyList({ initialData }: SocietyProps) {
+export default function SocietyList({ initialData, filters }: SocietyProps) {
   const {
     data: workshops,
     isLoading,
@@ -28,7 +30,8 @@ export default function SocietyList({ initialData }: SocietyProps) {
     fetchData: async (page, pageSize) => {
       const result = await societyService.getAvailableSeansItems({
         page,
-        page_size: pageSize
+        page_size: pageSize,
+        ...filters
       });
       return {
         results: result.workshops,
@@ -69,7 +72,7 @@ export default function SocietyList({ initialData }: SocietyProps) {
           </p>
         </div>
       ) : (
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
+        <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-3 sm:gap-6 justify-items-start w-full overflow-hidden">
           {workshops.map((workshop) => (
             <SocietyCard key={workshop.id} workshop={workshop} />
           ))}

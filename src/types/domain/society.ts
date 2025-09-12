@@ -6,8 +6,8 @@ export interface Society {
 }
 
 export interface Category {
-  name: string;
-  image: string;
+  name?: string;
+  image?: string;
   color: string;
 }
 
@@ -15,21 +15,26 @@ export interface Workshop {
   id: number;
   name: string;
   date: string;
-  startTime: string;
-  endTime: string;
-  duration: string;
+  startTime?: string;
+  endTime?: string;
+  duration?: string;
   location: string;
-  capacity: number;
-  attendedCount: number;
+  capacity?: number;
+  attendedCount?: number;
   price: number;
   discountedPrice?: number;
   discountPercentage?: number;
   image: string;
   category: Category;
-  categoryName: string;
+  categoryName?: string;
   isEligibleToBuy: boolean;
   goingPersonCount?: number;
   additionalLink?: string;
+  maxPrice?: number;
+  minDate?: string;
+  maxDate?: string;
+  seansItemCount?: number;
+  priceRangeText?: string;
 }
 
 export interface SocietyList {

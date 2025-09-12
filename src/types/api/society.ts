@@ -14,6 +14,10 @@ export interface GetSocietyResponse {
 export interface GetAvailableSeansItemsRequest {
   page: number;
   page_size: number;
+  min_price?: number;
+  max_price?: number;
+  start_date?: string;
+  end_date?: string;
 }
 
 export interface WorkshopCategory {
@@ -24,23 +28,17 @@ export interface WorkshopCategory {
 
 export interface WorkshopItem {
   id: number;
-  workshop_date: string;
-  start_time: string;
-  category: WorkshopCategory;
-  end_time: string;
   workshop_name: string;
-  category_name: string;
-  attended: number;
-  price: string;
-  location: string;
-  capacity: number;
-  duration: string;
+  category: number;
+  workshop_location: string;
   workshop_image: string;
-  discounted_price: string | null;
-  discount_percentage: string | null;
-  is_eligible_to_buy: boolean;
-  going_person_count: number | null;
-  additional_link: string;
+  discounted_price: number | null;
+  min_price: number;
+  max_price: number;
+  min_date: string;
+  max_date: string;
+  seans_item_count: number;
+  price_range_text: string | null;
 }
 
 export interface PaginatedResponse<T> {

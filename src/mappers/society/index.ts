@@ -1,4 +1,4 @@
-import type { Workshop, SocietyList, SocietyDetailInfo, WorkshopSession, WorkshopSessionGroup, WorkshopOwner, SessionDetail } from '@/types/domain';
+import type { Workshop, SocietyList, SocietyDetailInfo, WorkshopSession, WorkshopSessionGroup, WorkshopOwner, SessionDetail, Category } from '@/types/domain';
 import type {
   GetAvailableSeansItemsResponse,
   GetSocietyDetailResponse,
@@ -12,26 +12,20 @@ import type { WorkshopItem } from '@/types/api';
 export const mapWorkshopItem = (item: WorkshopItem): Workshop => ({
   id: item.id,
   name: item.workshop_name,
-  date: item.workshop_date,
-  startTime: item.start_time,
-  endTime: item.end_time,
-  duration: item.duration,
-  location: item.location,
-  capacity: item.capacity,
-  attendedCount: item.attended,
-  price: parseFloat(item.price),
-  discountedPrice: item.discounted_price ? parseFloat(item.discounted_price) : undefined,
-  discountPercentage: item.discount_percentage ? parseFloat(item.discount_percentage) : undefined,
+  date: item.min_date,
+  location: item.workshop_location,
+  price: item.min_price,
+  discountedPrice: item.discounted_price || undefined,
   image: item.workshop_image,
   category: {
-    name: item.category.name,
-    image: item.category.image,
-    color: item.category.color,
-  },
-  categoryName: item.category_name,
-  isEligibleToBuy: item.is_eligible_to_buy,
-  goingPersonCount: item.going_person_count || undefined,
-  additionalLink: item.additional_link || undefined,
+    color: '#6B7280',
+  } as Category,
+  isEligibleToBuy: true,
+  maxPrice: item.max_price,
+  minDate: item.min_date,
+  maxDate: item.max_date,
+  seansItemCount: item.seans_item_count,
+  priceRangeText: item.price_range_text || undefined,
 });
 
 export const mapSocietyList = (response: GetAvailableSeansItemsResponse, currentPage: number): SocietyList => ({

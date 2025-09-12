@@ -1,88 +1,129 @@
 import Image from 'next/image';
 import Link from 'next/link';
 import type { Workshop } from '@/types/domain';
-import { Card, CardContent, CardHeader, CardTitle, CardDescription, CardFooter } from '@/components/ui/card';
 
 interface SocietyCardProps {
   workshop: Workshop;
 }
 
 export function SocietyCard({ workshop }: SocietyCardProps) {
-  return (
-    <Link href={`/topluluk/${workshop.id}`}>
-      <Card className="overflow-hidden cursor-pointer group hover:shadow-lg transition-all duration-200">
-        <div className="relative h-40">
-          <Image
-            src={workshop.image}
-            alt={workshop.name}
-            fill
-            className="object-cover group-hover:scale-105 transition-transform duration-300"
-          />
-          <div 
-            className="absolute top-2 right-2 px-2 py-1 rounded text-xs font-medium text-white shadow-sm"
-            style={{ backgroundColor: workshop.category.color }}
-          >
-            {workshop.category.name}
+  const formatDateRange = () => {
+    if (workshop.minDate === workshop.maxDate) {
+      return new Date(workshop.minDate!).toLocaleDateString('tr-TR', { 
+        day: 'numeric', 
+        month: 'short'
+      });
+    } else {
+      const startDate = new Date(workshop.minDate!).toLocaleDateString('tr-TR', { 
+        day: 'numeric', 
+        month: 'short'
+      });
+      const endDate = new Date(workshop.maxDate!).toLocaleDateString('tr-TR', { 
+        day: 'numeric', 
+        month: 'short'
+      });
+      return `${startDate} - ${endDate}`;
+    }
+  };
+
+  const getPriceDisplay = () => {
+    if (workshop.price === 0 && workshop.maxPrice === 0) {
+      return (
+        <div className="text-sm sm:text-lg font-bold text-green-600">
+          Ücretsiz
+        </div>
+      );
+    }
+    
+    if (workshop.discountedPrice) {
+      return (
+        <div className="flex items-center gap-2">
+          <div className="text-sm sm:text-lg font-bold text-green-600">
+            {workshop.discountedPrice.toFixed(0)}₺
+          </div>
+          <div className="text-xs sm:text-sm text-gray-500 line-through">
+            {workshop.price.toFixed(0)}₺
           </div>
         </div>
+      );
+    }
+    
+    if (workshop.price === workshop.maxPrice) {
+      return (
+        <div className="text-sm sm:text-lg font-bold text-green-600">
+          {workshop.price.toFixed(0)}₺
+        </div>
+      );
+    }
+    
+    if (workshop.priceRangeText) {
+      return (
+        <div className="text-sm sm:text-lg font-bold text-green-600">
+          {workshop.price.toFixed(0)}₺ {workshop.priceRangeText}
+        </div>
+      );
+    }
+    
+    return (
+      <div className="text-sm sm:text-lg font-bold text-green-600">
+        {workshop.price.toFixed(0)}₺ - {workshop.maxPrice?.toFixed(0)}₺
+      </div>
+    );
+  };
 
-        <CardHeader className="pb-2">
-          <CardTitle className="text-sm line-clamp-2">
-            {workshop.name}
-          </CardTitle>
-          <CardDescription className="text-xs">
-            {workshop.location}
-          </CardDescription>
-        </CardHeader>
-
-        <CardContent className="pt-0">
-          <div className="space-y-2 text-xs text-muted-foreground mb-4">
-            <div className="flex items-center">
-              <span className="font-medium">📅</span>
-              <span className="ml-1">
-                {new Date(workshop.date).toLocaleDateString('tr-TR', { 
-                  day: 'numeric', 
-                  month: 'short'
-                })}
-              </span>
-              <span className="mx-2">•</span>
-              <span>{workshop.startTime.slice(0, 5)}</span>
-            </div>
-            <div className="flex items-center">
-              <span>👥 {workshop.attendedCount}/{workshop.capacity}</span>
-            </div>
-          </div>
-
-          <div className="flex flex-col">
-            {workshop.discountedPrice ? (
-              <div className="flex items-center gap-1 mb-2">
-                <span className="text-xs text-muted-foreground line-through">
-                  {workshop.price}₺
-                </span>
-                <span className="text-sm font-bold text-orange-600">
-                  {workshop.discountedPrice.toFixed(0)}₺
-                </span>
+  return (
+    <Link href={`/topluluk/${workshop.id}`}>
+      <div className="cursor-pointer group transition-all duration-300 w-[150px] sm:w-[280px]">
+        <div className="relative mb-2">
+          <div className="relative w-[150px] h-[90px] sm:w-[280px] sm:h-[200px] overflow-hidden rounded-lg">
+            <Image
+              src={workshop.image}
+              alt={workshop.name}
+              fill
+              className="object-cover group-hover:scale-105 transition-transform duration-300"
+            />
+            {workshop.category.name && (
+              <div 
+                className="absolute top-3 left-3 px-2 py-1 rounded-full text-xs font-medium text-white shadow-lg"
+                style={{ backgroundColor: workshop.category.color }}
+              >
+                {workshop.category.name}
               </div>
-            ) : (
-              <span className="text-sm font-bold mb-2">
-                {workshop.price === 0 ? 'Ücretsiz' : `${workshop.price.toFixed(0)}₺`}
-              </span>
             )}
           </div>
-        </CardContent>
-
-        <CardFooter className="pt-0">
-          <div 
-            className={`w-full py-2 px-3 rounded text-xs font-medium text-center transition-colors ${
-              workshop.isEligibleToBuy 
-                ? 'bg-orange-500 hover:bg-orange-600 text-white' 
-                : 'bg-muted text-muted-foreground'
-            }`}
-          >
-            {workshop.isEligibleToBuy ? 'Detayları Gör' : 'Tükendi'}
+        </div>
+        
+        <div className="space-y-2 w-[150px] sm:w-[280px] min-h-[100px] sm:min-h-[120px]">
+          <h3 className="font-bold text-gray-900 dark:text-white text-sm sm:text-lg line-clamp-2 group-hover:text-orange-600 transition-colors leading-tight">
+            {workshop.name}
+          </h3>
+          
+          <div className="flex items-center justify-between text-xs sm:text-sm text-gray-600 dark:text-gray-400">
+            <div className="flex items-center">
+              <svg className="w-3 h-3 sm:w-4 sm:h-4 mr-1.5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                <path fillRule="evenodd" d="M6 2a1 1 0 00-1 1v1H4a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V6a2 2 0 00-2-2h-1V3a1 1 0 10-2 0v1H7V3a1 1 0 00-1-1zm0 5a1 1 0 000 2h8a1 1 0 100-2H6z" clipRule="evenodd" />
+              </svg>
+              <span>{formatDateRange()}</span>
+              {workshop.seansItemCount && workshop.seansItemCount > 1 && (
+                <span className="ml-2 text-orange-600 dark:text-orange-400 text-xs font-medium">
+                  • {workshop.seansItemCount} seans
+                </span>
+              )}
+            </div>
+            
+            <div className="flex items-center flex-shrink-0">
+              <svg className="w-3 h-3 sm:w-4 sm:h-4 mr-1.5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                <path fillRule="evenodd" d="M5.05 4.05a7 7 0 119.9 9.9L10 18.9l-4.95-4.95a7 7 0 010-9.9zM10 11a2 2 0 100-4 2 2 0 000 4z" clipRule="evenodd" />
+              </svg>
+              <span className="truncate">{workshop.location}</span>
+            </div>
           </div>
-        </CardFooter>
-      </Card>
+
+          <div className="pt-1">
+            {getPriceDisplay()}
+          </div>
+        </div>
+      </div>
     </Link>
   );
 }
