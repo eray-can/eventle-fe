@@ -49,22 +49,22 @@ export function Header() {
           >
             Workshop
           </Link>
-          <a
-            href="#"
+          <Link
+            href="/hakkimizda"
             className="text-sm font-medium text-white transition-colors"
             onMouseEnter={(e) => (e.target as HTMLElement).style.color = '#6535f3'}
             onMouseLeave={(e) => (e.target as HTMLElement).style.color = 'white'}
           >
             {t('about')}
-          </a>
-          <a
-            href="#"
+          </Link>
+          <Link
+            href="/iletisim"
             className="text-sm font-medium text-white transition-colors"
             onMouseEnter={(e) => (e.target as HTMLElement).style.color = '#6535f3'}
             onMouseLeave={(e) => (e.target as HTMLElement).style.color = 'white'}
           >
             {t('contact')}
-          </a>
+          </Link>
         </nav>
 
         <div className="flex items-center space-x-4">
