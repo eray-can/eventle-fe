@@ -1,9 +1,10 @@
 import { MapPin } from 'lucide-react';
-import Image from 'next/image';
+import Image from '@/components/ui/image';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { workshopService } from '@/services/workshop/service';
 import { EventCalendar } from '@/components/common/event-calendar';
+import { capitalizeTitle } from '@/lib/utils';
 
 interface WorkshopDetailPageProps {
   params: Promise<{
@@ -49,10 +50,10 @@ export default async function WorkshopDetailPage({ params }: WorkshopDetailPageP
         <div className="relative h-80 md:h-96">
           <Image
             src={workshopDetail.image}
-            alt={workshopDetail.name}
-            fill
-            className="object-cover"
-            priority
+            alt={capitalizeTitle(workshopDetail.name)}
+            width={800}
+            height={600}
+            className="w-full h-full object-cover"
           />
           <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent" />
 
@@ -67,7 +68,7 @@ export default async function WorkshopDetailPage({ params }: WorkshopDetailPageP
         {/* Title - Resmin Altında */}
         <div className="px-4 py-4">
           <h1 className="text-2xl md:text-4xl font-bold text-white leading-tight">
-            {workshopDetail.name}
+            {capitalizeTitle(workshopDetail.name)}
           </h1>
         </div>
       </div>
@@ -83,8 +84,9 @@ export default async function WorkshopDetailPage({ params }: WorkshopDetailPageP
                 <Image
                   src={workshopDetail.owner.profileImage}
                   alt={workshopDetail.owner.fullName}
-                  fill
-                  className="object-cover"
+                  width={48}
+                  height={48}
+                  className="w-full h-full object-cover"
                 />
               </div>
               <div>
@@ -204,10 +206,10 @@ export default async function WorkshopDetailPage({ params }: WorkshopDetailPageP
               <div className="relative aspect-[4/3] rounded-2xl overflow-hidden">
                 <Image
                   src={workshopDetail.image}
-                  alt={workshopDetail.name}
-                  fill
-                  className="object-cover"
-                  priority
+                  alt={capitalizeTitle(workshopDetail.name)}
+                  width={800}
+                  height={600}
+                  className="w-full h-full object-cover"
                 />
                 {/* Category Badge - Sol Alt */}
                 <div className="absolute bottom-4 left-4">
@@ -227,8 +229,9 @@ export default async function WorkshopDetailPage({ params }: WorkshopDetailPageP
                         <Image
                           src={workshopDetail.owner.profileImage}
                           alt={workshopDetail.owner.fullName}
-                          fill
-                          className="object-cover"
+                          width={64}
+                          height={64}
+                          className="w-full h-full object-cover"
                         />
                       </div>
                       <div>
@@ -249,7 +252,7 @@ export default async function WorkshopDetailPage({ params }: WorkshopDetailPageP
               {/* Title and Description */}
               <div>
                 <h1 className="text-4xl font-bold text-white mb-6 leading-tight">
-                  {workshopDetail.name}
+                  {capitalizeTitle(workshopDetail.name)}
                 </h1>
                 <div className="prose prose-lg prose-invert max-w-none">
                   <p className="text-gray-300 leading-relaxed text-lg">

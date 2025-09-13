@@ -42,3 +42,21 @@ export function capitalizeTitle(title: string): string {
     })
     .join(' ');
 }
+
+export function formatDuration(duration: string): string {
+  if (!duration) return '';
+  
+  // Eğer zaten "saat" kelimesi varsa olduğu gibi döndür
+  if (duration.includes('saat')) {
+    return duration;
+  }
+  
+  // Sayısal değeri çıkar
+  const match = duration.match(/\d+/);
+  if (match) {
+    const hours = parseInt(match[0]);
+    return `${hours} saat`;
+  }
+  
+  return duration;
+}

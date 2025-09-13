@@ -1,6 +1,7 @@
 import { societyService } from '@/services/society/service';
 import type { SocietyList } from '@/types/domain';
 import SocietyPageClient from '@/components/society/society-page-client';
+import { capitalizeTitle } from '@/lib/utils';
 
 async function getInitialSocieties(): Promise<SocietyList> {
   try {
@@ -28,10 +29,10 @@ export default async function CommunityPage() {
       <div className="w-full mx-auto px-4 sm:px-6">
         <div className="text-center mb-12">
           <h1 className="text-4xl font-bold text-gray-900 dark:text-white mb-4">
-            Topluluk
+            {capitalizeTitle('Topluluk')}
           </h1>
           <p className="text-xl text-gray-600 dark:text-gray-300 max-w-2xl mx-auto">
-            Mevcut society ve seansları keşfedin
+            {capitalizeTitle('Mevcut society ve seansları keşfedin')}
           </p>
         </div>
 

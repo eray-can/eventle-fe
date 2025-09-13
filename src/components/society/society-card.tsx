@@ -1,6 +1,7 @@
 import Image from 'next/image';
 import Link from 'next/link';
 import type { Workshop } from '@/types/domain';
+import { capitalizeTitle } from '@/lib/utils';
 
 interface SocietyCardProps {
   workshop: Workshop;
@@ -95,7 +96,7 @@ export function SocietyCard({ workshop }: SocietyCardProps) {
         
         <div className="space-y-2 w-[150px] sm:w-[280px] min-h-[100px] sm:min-h-[120px]">
           <h3 className="font-bold text-gray-900 dark:text-white text-sm sm:text-lg line-clamp-2 group-hover:text-orange-600 transition-colors leading-tight">
-            {workshop.name}
+            {capitalizeTitle(workshop.name)}
           </h3>
           
           <div className="flex items-center justify-between text-xs sm:text-sm text-gray-600 dark:text-gray-400">

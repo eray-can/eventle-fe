@@ -1,9 +1,10 @@
 import { MapPin } from 'lucide-react';
-import Image from 'next/image';
+import Image from '@/components/ui/image';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { societyService } from '@/services/society/service';
 import { EventCalendar } from '@/components/common/event-calendar';
+import { formatDuration, capitalizeTitle } from '@/lib/utils';
 
 interface CommunityDetailPageProps {
   params: Promise<{
@@ -50,9 +51,9 @@ export default async function CommunityDetailPage({ params }: CommunityDetailPag
           <Image
             src={societyDetail.image}
             alt={societyDetail.name}
-            fill
-            className="object-cover"
-            priority
+            width={800}
+            height={600}
+            className="object-cover w-full h-full absolute inset-0"
           />
           <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent" />
 
@@ -67,7 +68,7 @@ export default async function CommunityDetailPage({ params }: CommunityDetailPag
         {/* Title - Resmin Altında */}
         <div className="px-4 py-4">
           <h1 className="text-2xl md:text-4xl font-bold text-white leading-tight">
-            {societyDetail.name}
+            {capitalizeTitle(societyDetail.name)}
           </h1>
         </div>
       </div>
@@ -83,8 +84,9 @@ export default async function CommunityDetailPage({ params }: CommunityDetailPag
                 <Image
                   src={societyDetail.owner.profileImage}
                   alt={societyDetail.owner.fullName}
-                  fill
-                  className="object-cover"
+                  width={48}
+                  height={48}
+                  className="object-cover w-full h-full absolute inset-0"
                 />
               </div>
               <div>
@@ -113,7 +115,7 @@ export default async function CommunityDetailPage({ params }: CommunityDetailPag
           {/* Duration */}
           <div>
             <h4 className="text-gray-400 text-sm">Etkinlik Süresi</h4>
-            <p className="text-white">{societyDetail.duration}</p>
+            <p className="text-white">{formatDuration(societyDetail.duration)}</p>
           </div>
 
           {/* Location */}
@@ -205,9 +207,9 @@ export default async function CommunityDetailPage({ params }: CommunityDetailPag
                 <Image
                   src={societyDetail.image}
                   alt={societyDetail.name}
-                  fill
-                  className="object-cover"
-                  priority
+                  width={800}
+                  height={600}
+                  className="object-cover w-full h-full absolute inset-0"
                 />
                 {/* Category Badge - Sol Alt */}
                 <div className="absolute bottom-4 left-4">
@@ -227,8 +229,9 @@ export default async function CommunityDetailPage({ params }: CommunityDetailPag
                         <Image
                           src={societyDetail.owner.profileImage}
                           alt={societyDetail.owner.fullName}
-                          fill
-                          className="object-cover"
+                          width={64}
+                          height={64}
+                          className="object-cover w-full h-full absolute inset-0"
                         />
                       </div>
                       <div>
@@ -249,7 +252,7 @@ export default async function CommunityDetailPage({ params }: CommunityDetailPag
               {/* Title and Description */}
               <div>
                 <h1 className="text-4xl font-bold text-white mb-6 leading-tight">
-                  {societyDetail.name}
+                  {capitalizeTitle(societyDetail.name)}
                 </h1>
                 <div className="prose prose-lg prose-invert max-w-none">
                   <p className="text-gray-300 leading-relaxed text-lg">
@@ -268,7 +271,7 @@ export default async function CommunityDetailPage({ params }: CommunityDetailPag
                   <div className="grid grid-cols-3 gap-4">
                     <div>
                       <h4 className="text-gray-400 text-sm mb-1">Etkinlik Süresi</h4>
-                      <p className="text-white font-medium">{societyDetail.duration}</p>
+                      <p className="text-white font-medium">{formatDuration(societyDetail.duration)}</p>
                     </div>
 
                     {/* Location */}
