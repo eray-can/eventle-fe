@@ -1,0 +1,11 @@
+{
+  "applinks": {
+    "apps": [],
+    "details": [
+      {
+        "appID": "GTQ58RYSB2.com.eventle.eventle",
+        "paths": [ "/*", "/events/*", "/login", "/profile/*" ]
+      }
+    ]
+  }
+}

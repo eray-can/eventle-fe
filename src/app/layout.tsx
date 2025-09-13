@@ -20,9 +20,9 @@ export const metadata: Metadata = {
   title: "Eventle - Etkinlik Yönetim Platformu",
   description: "Modern ve kullanıcı dostu etkinlik yönetim platformu",
   icons: {
-    icon: "/eventle-transparan-logo.webp",
-    shortcut: "/eventle-transparan-logo.webp",
-    apple: "/eventle-transparan-logo.webp",
+    icon: "/static/media/eventle-transparan-logo.webp",
+    shortcut: "/static/media//eventle-transparan-logo.webp",
+    apple: "/static/media//eventle-transparan-logo.webp",
   },
 };
 

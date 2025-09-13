@@ -1,0 +1,11 @@
+[
+  {
+    "relation": ["delegate_permission/common.handle_all_urls"],
+    "target": {
+      "namespace": "android_app",
+      "package_name": "com.eventle.eventle",
+      "sha256_cert_fingerprints":
+      ["50:6A:86:E3:A3:AE:1D:77:DD:08:E7:30:7E:D1:7F:4F:4C:5B:60:6F:1C:02:8F:C5:F6:73:AA:E3:03:7D:59:A4"]
+    }
+  }
+]

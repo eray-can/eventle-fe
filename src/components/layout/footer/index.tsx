@@ -1,4 +1,6 @@
 import { getTranslations } from 'next-intl/server';
+import Image from 'next/image';
+import Link from 'next/link';
 
 export async function Footer() {
   const t = await getTranslations('Common');
@@ -6,12 +8,52 @@ export async function Footer() {
   return (
     <footer className="border-t" style={{ backgroundColor: '#030712' }}>
       <div className="container mx-auto px-4 py-8 md:py-12">
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
+        <div className="grid grid-cols-1 md:grid-cols-5 gap-8">
           <div className="space-y-3">
-            <h3 className="text-lg font-semibold text-white">Eventle</h3>
+            <div className="flex justify-start">
+              <Image 
+                src="/static/media/eventle-uzun-logo.png" 
+                alt="Eventle" 
+                width={200}
+                height={48}
+                className="h-12 w-auto"
+              />
+            </div>
             <p className="text-sm text-gray-300">
-              {t('footerDescription')}
+              Şehrindeki tüm etkinlikleri tek uygulamadan<br />
+              görüntüle, kendi etkinliğini oluştur<br />
+              ve EventBuddy&apos;ni bul!
             </p>
+            <div className="flex space-x-3 pt-2">
+              <a 
+                href="https://www.instagram.com/eventle.co/" 
+                target="_blank"
+                rel="noopener noreferrer"
+                className="block transition-opacity hover:opacity-80"
+              >
+                <Image 
+                  src="/static/media/instagram-logo.webp" 
+                  alt="Instagram" 
+                  width={24}
+                  height={24}
+                  className="h-6 w-6"
+                />
+              </a>
+              <a 
+                href="https://www.tiktok.com/@eventle.co" 
+                target="_blank"
+                rel="noopener noreferrer"
+                className="block transition-opacity hover:opacity-80"
+              >
+                <Image 
+                  src="/static/media/tiktok-logo.webp" 
+                  alt="TikTok" 
+                  width={24}
+                  height={24}
+                  className="h-6 w-6"
+                />
+              </a>
+            </div>
           </div>
 
           <div className="space-y-3">
@@ -24,74 +66,116 @@ export async function Footer() {
               >
                 {t('home')}
               </a>
-              <a 
-                href="#" 
+              <Link 
+                href="/topluluk" 
                 className="block text-sm text-gray-300 transition-colors"
                 style={{ color: '#d1d5db' }}
               >
-                {t('events')}
-              </a>
-              <a 
-                href="#" 
+                Topluluk
+              </Link>
+              <Link 
+                href="/hakkimizda" 
                 className="block text-sm text-gray-300 transition-colors"
                 style={{ color: '#d1d5db' }}
               >
-                {t('about')}
-              </a>
+                Hakkımızda
+              </Link>
             </div>
           </div>
 
           <div className="space-y-3">
             <h4 className="text-sm font-semibold text-white">{t('support')}</h4>
             <div className="space-y-2">
-              <a 
-                href="#" 
+              <Link 
+                href="/yardim" 
                 className="block text-sm text-gray-300 transition-colors"
                 style={{ color: '#d1d5db' }}
               >
-                {t('help')}
-              </a>
-              <a 
-                href="#" 
+                Yardım
+              </Link>
+              <Link 
+                href="/iletisim" 
                 className="block text-sm text-gray-300 transition-colors"
                 style={{ color: '#d1d5db' }}
               >
-                {t('contact')}
-              </a>
-              <a 
-                href="#" 
+                İletişim
+              </Link>
+              <Link 
+                href="/sss" 
                 className="block text-sm text-gray-300 transition-colors"
                 style={{ color: '#d1d5db' }}
               >
-                {t('faq')}
-              </a>
+                SSS
+              </Link>
             </div>
           </div>
 
           <div className="space-y-3">
-            <h4 className="text-sm font-semibold text-white">{t('legal')}</h4>
+            <h4 className="text-sm font-semibold text-white">Yasal</h4>
             <div className="space-y-2">
-              <a 
-                href="#" 
+              <Link 
+                href="/aydinlatma-metni" 
                 className="block text-sm text-gray-300 transition-colors"
                 style={{ color: '#d1d5db' }}
               >
-                {t('privacy')}
+                Aydınlatma Metni
+              </Link>
+              <Link 
+                href="/gizlilik-politikasi" 
+                className="block text-sm text-gray-300 transition-colors"
+                style={{ color: '#d1d5db' }}
+              >
+                Gizlilik Politikası
+              </Link>
+              <Link 
+                href="/kullanim-kosullari" 
+                className="block text-sm text-gray-300 transition-colors"
+                style={{ color: '#d1d5db' }}
+              >
+                Kullanım Koşulları
+              </Link>
+            </div>
+          </div>
+
+          <div className="space-y-3">
+            <h4 className="text-sm font-semibold text-white">Uygulamayı İndir</h4>
+            <div className="flex space-x-3">
+              <a 
+                href="https://apps.apple.com/tr/app/eventle/id6474272088?l=tr" 
+                target="_blank"
+                rel="noopener noreferrer"
+                className="block transition-opacity hover:opacity-80"
+              >
+                <Image 
+                  src="/static/media/footer-app-store.webp" 
+                  alt="App Store'dan İndir" 
+                  width={120}
+                  height={40}
+                  className="h-10 w-auto"
+                />
               </a>
               <a 
-                href="#" 
-                className="block text-sm text-gray-300 transition-colors"
-                style={{ color: '#d1d5db' }}
+                href="https://play.google.com/store/apps/details?id=com.eventle.eventle&pcampaignid=web_share&pli=1" 
+                target="_blank"
+                rel="noopener noreferrer"
+                className="block transition-opacity hover:opacity-80"
               >
-                {t('terms')}
+                <Image 
+                  src="/static/media/footer-google-play.webp" 
+                  alt="Google Play'den İndir" 
+                  width={120}
+                  height={40}
+                  className="h-10 w-auto"
+                />
               </a>
             </div>
           </div>
+
         </div>
 
         <div className="border-t mt-8 pt-8 text-center">
           <p className="text-sm text-gray-300">
-            © 2024 Eventle. {t('allRightsReserved')}
+            © {new Date().getFullYear()} Eventle. {t('allRightsReserved')}
           </p>
         </div>
       </div>

@@ -14,7 +14,7 @@ export function Header() {
         <div className="flex items-center space-x-4">
           <Link href="/" className="flex items-center">
             <Image
-              src="/eventle-uzun-logo.png"
+              src="/static/media/eventle-uzun-logo.png"
               alt="Eventle"
               width={200}
               height={65}
@@ -25,40 +25,40 @@ export function Header() {
         </div>
 
         <nav className="hidden md:flex items-center space-x-6">
-          <Link 
-            href="/" 
+          <Link
+            href="/"
             className="text-sm font-medium text-white transition-colors"
             onMouseEnter={(e) => (e.target as HTMLElement).style.color = '#6535f3'}
             onMouseLeave={(e) => (e.target as HTMLElement).style.color = 'white'}
           >
             {t('home')}
           </Link>
-          <Link 
-            href="/topluluk" 
+          <Link
+            href="/topluluk"
             className="text-sm font-medium text-white transition-colors"
             onMouseEnter={(e) => (e.target as HTMLElement).style.color = '#6535f3'}
             onMouseLeave={(e) => (e.target as HTMLElement).style.color = 'white'}
           >
             {t('community')}
           </Link>
-          <a 
-            href="#" 
+          <Link
+            href="/workshop"
             className="text-sm font-medium text-white transition-colors"
             onMouseEnter={(e) => (e.target as HTMLElement).style.color = '#6535f3'}
             onMouseLeave={(e) => (e.target as HTMLElement).style.color = 'white'}
           >
-            {t('events')}
-          </a>
-          <a 
-            href="#" 
+            Workshop
+          </Link>
+          <a
+            href="#"
             className="text-sm font-medium text-white transition-colors"
             onMouseEnter={(e) => (e.target as HTMLElement).style.color = '#6535f3'}
             onMouseLeave={(e) => (e.target as HTMLElement).style.color = 'white'}
           >
             {t('about')}
           </a>
-          <a 
-            href="#" 
+          <a
+            href="#"
             className="text-sm font-medium text-white transition-colors"
             onMouseEnter={(e) => (e.target as HTMLElement).style.color = '#6535f3'}
             onMouseLeave={(e) => (e.target as HTMLElement).style.color = 'white'}
