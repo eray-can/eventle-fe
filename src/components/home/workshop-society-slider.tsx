@@ -2,6 +2,7 @@
 
 import { useRef } from 'react';
 import Image from 'next/image';
+import Link from 'next/link';
 import { Card, CardContent, CardHeader } from '@/components/ui/card';
 import { formatDateTurkish } from '@/lib/utils';
 import type { SocietyList } from '@/types/domain';
@@ -9,9 +10,10 @@ import type { SocietyList } from '@/types/domain';
 interface WorkshopSocietySliderProps {
   societyList: SocietyList | null;
   title?: string;
+  dataType?: 'society' | 'workshop';
 }
 
-export default function WorkshopSocietySlider({ societyList, title = "Popüler Etkinlikler" }: WorkshopSocietySliderProps) {
+export default function WorkshopSocietySlider({ societyList, title = "Popüler Etkinlikler", dataType = 'society' }: WorkshopSocietySliderProps) {
   const scrollRef = useRef<HTMLDivElement>(null);
 
   const scrollLeft = () => {
@@ -58,7 +60,9 @@ export default function WorkshopSocietySlider({ societyList, title = "Popüler E
         </h2>
         
         <div className="flex items-center gap-2">
-          <span className="text-white text-sm">TÜMÜ</span>
+          <Link href={dataType === 'society' ? '/topluluk' : '/workshop'} className="text-white text-sm hover:text-purple-400 transition-colors">
+            TÜMÜ
+          </Link>
           <button onClick={scrollLeft} className="p-2 text-white hover:bg-gray-700 rounded-full transition-colors">
             <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
@@ -76,7 +80,8 @@ export default function WorkshopSocietySlider({ societyList, title = "Popüler E
         <div ref={scrollRef} className="overflow-x-auto scrollbar-hide">
           <div className="flex gap-3 pb-4">
           {societyList.workshops.map((workshop) => (
-            <Card key={workshop.id} className="flex-none w-60 overflow-hidden border-none shadow-none bg-transparent" style={{ direction: 'ltr' }}>
+            <Link key={workshop.id} href={dataType === 'society' ? `/topluluk/${workshop.id}` : `/workshop/${workshop.id}`}>
+              <Card className="flex-none w-60 overflow-hidden border-none shadow-none bg-transparent hover:bg-gray-800/50 transition-colors cursor-pointer" style={{ direction: 'ltr' }}>
               <CardHeader className="p-0">
                 <div className="relative h-57">
                   <Image 
@@ -109,7 +114,8 @@ export default function WorkshopSocietySlider({ societyList, title = "Popüler E
                 
 
               </CardContent>
-             </Card>
+              </Card>
+            </Link>
            ))}
          </div>
        </div>

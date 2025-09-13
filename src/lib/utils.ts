@@ -18,3 +18,27 @@ export function formatDateTurkish(date: string | Date): string {
   
   return `${day} ${month} ${year}`;
 }
+
+export function capitalizeAddress(address: string): string {
+  if (!address) return '';
+  
+  return address
+    .split(' ')
+    .map(word => {
+      if (word.length === 0) return word;
+      return word.charAt(0).toUpperCase() + word.slice(1).toLowerCase();
+    })
+    .join(' ');
+}
+
+export function capitalizeTitle(title: string): string {
+  if (!title) return '';
+  
+  return title
+    .split(' ')
+    .map(word => {
+      if (word.length === 0) return word;
+      return word.charAt(0).toUpperCase() + word.slice(1).toLowerCase();
+    })
+    .join(' ');
+}
