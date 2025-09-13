@@ -66,10 +66,6 @@ export function Header() {
             {t('contact')}
           </Link>
         </nav>
-
-        <div className="flex items-center space-x-4">
-          <LanguageToggle />
-        </div>
       </div>
     </header>
   );
