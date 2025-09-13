@@ -1,7 +1,6 @@
 'use client';
 
 import { useTranslations } from 'next-intl';
-import { LanguageToggle } from '@/components/language-toggle';
 import Link from 'next/link';
 import Image from 'next/image';
 
