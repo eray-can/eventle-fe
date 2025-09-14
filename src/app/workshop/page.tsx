@@ -1,6 +1,39 @@
 import { workshopService } from '@/services/workshop/service';
 import type { SocietyList } from '@/types/domain';
 import WorkshopPageClient from '@/components/workshop/workshop-page-client';
+import { BASE_DOMAIN } from '@/lib/utils';
+import type { Metadata } from 'next';
+
+export const metadata: Metadata = {
+  title: 'Workshop Etkinlikleri - Eventle',
+  description: 'Mevcut workshop ve seansları keşfedin. Eventle\'de en kaliteli workshop etkinliklerine katılın.',
+  keywords: 'workshop, etkinlik, eğitim, seminer, kurs, eventle',
+  openGraph: {
+    title: 'Workshop Etkinlikleri - Eventle',
+    description: 'Mevcut workshop ve seansları keşfedin. Eventle\'de en kaliteli workshop etkinliklerine katılın.',
+    url: `${BASE_DOMAIN}/workshop`,
+    siteName: 'Eventle',
+    images: [
+      {
+        url: `${BASE_DOMAIN}/static/media/workshop-og.jpg`,
+        width: 1200,
+        height: 630,
+        alt: 'Workshop Etkinlikleri - Eventle'
+      }
+    ],
+    locale: 'tr_TR',
+    type: 'website'
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Workshop Etkinlikleri - Eventle',
+    description: 'Mevcut workshop ve seansları keşfedin. Eventle\'de en kaliteli workshop etkinliklerine katılın.',
+    images: [`${BASE_DOMAIN}/static/media/workshop-og.jpg`]
+  },
+  alternates: {
+    canonical: `${BASE_DOMAIN}/workshop`
+  }
+};
 
 async function getInitialWorkshops(): Promise<SocietyList> {
   try {

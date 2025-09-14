@@ -4,7 +4,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { workshopService } from '@/services/workshop/service';
 import { EventCalendar } from '@/components/common/event-calendar';
-import { capitalizeTitle } from '@/lib/utils';
+import { capitalizeTitle, BASE_DOMAIN } from '@/lib/utils';
 import { FAQ } from '@/components/common/faq';
 import { generateWorkshopFAQ } from '@/lib/faq-generator';
 import { FAQPage } from '@/components/seo/faq-page';
@@ -13,6 +13,56 @@ interface WorkshopDetailPageProps {
   params: Promise<{
     id: string;
   }>;
+}
+
+export async function generateMetadata({ params }: WorkshopDetailPageProps) {
+  const { id: workshopId } = await params;
+  
+  try {
+    const workshopDetail = await workshopService.getWorkshopDetail({
+      id: parseInt(workshopId)
+    });
+    
+    const eventUrl = `${BASE_DOMAIN}/workshop/${workshopId}`;
+    
+    return {
+      title: workshopDetail.name,
+      description: workshopDetail.description || `${workshopDetail.name} biletleri Eventle'de! Tıkla, ${workshopDetail.name} etkinliğine bilet satın al.`,
+      openGraph: {
+        title: workshopDetail.name,
+        description: workshopDetail.description || `${workshopDetail.name} biletleri Eventle'de! Tıkla, ${workshopDetail.name} etkinliğine bilet satın al.`,
+        url: eventUrl,
+        siteName: 'Eventle',
+        images: [
+          {
+            url: workshopDetail.image,
+            width: 1200,
+            height: 630,
+            alt: workshopDetail.name,
+          },
+        ],
+        locale: 'tr_TR',
+        type: 'website',
+      },
+      twitter: {
+        card: 'summary_large_image',
+        title: workshopDetail.name,
+        description: workshopDetail.description || `${workshopDetail.name} biletleri Eventle'de! Tıkla, ${workshopDetail.name} etkinliğine bilet satın al.`,
+        images: [workshopDetail.image],
+      },
+      alternates: {
+        canonical: eventUrl,
+      },
+    };
+  } catch {
+    return {
+      title: 'Workshop Etkinliği - Eventle',
+      description: 'Eventle\'de workshop etkinlikleri! Tıkla, etkinliğe bilet satın al.',
+      alternates: {
+        canonical: `${BASE_DOMAIN}/workshop/${workshopId}`,
+      },
+    };
+  }
 }
 
 

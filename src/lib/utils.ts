@@ -1,6 +1,8 @@
 import { type ClassValue, clsx } from "clsx"
 import { twMerge } from "tailwind-merge"
 
+export const BASE_DOMAIN = "https://eventle.com"
+
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs))
 }

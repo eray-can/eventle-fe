@@ -4,7 +4,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { societyService } from '@/services/society/service';
 import { EventCalendar } from '@/components/common/event-calendar';
-import { formatDuration, capitalizeTitle } from '@/lib/utils';
+import { formatDuration, capitalizeTitle, BASE_DOMAIN } from '@/lib/utils';
 import { EventScheduled } from '@/components/seo/event-scheduled';
 import { FAQ } from '@/components/common/faq';
 import { generateSocietyFAQ } from '@/lib/faq-generator';
@@ -16,17 +16,67 @@ interface CommunityDetailPageProps {
   }>;
 }
 
+export async function generateMetadata({ params }: CommunityDetailPageProps) {
+  const { id: societyId } = await params;
+  
+  try {
+    const societyDetail = await societyService.getSocietyDetail({
+      id: parseInt(societyId)
+    });
+    
+    const eventUrl = `${BASE_DOMAIN}/topluluk/${societyId}`;
+    
+    return {
+      title: societyDetail.name,
+      description: societyDetail.description || `${societyDetail.name} biletleri Eventle'de! Tıkla, ${societyDetail.name} etkinliğine bilet satın al.`,
+      openGraph: {
+        title: societyDetail.name,
+        description: societyDetail.description || `${societyDetail.name} biletleri Eventle'de! Tıkla, ${societyDetail.name} etkinliğine bilet satın al.`,
+        url: eventUrl,
+        siteName: 'Eventle',
+        images: [
+          {
+            url: societyDetail.image,
+            width: 1200,
+            height: 630,
+            alt: societyDetail.name,
+          },
+        ],
+        locale: 'tr_TR',
+        type: 'website',
+      },
+      twitter: {
+        card: 'summary_large_image',
+        title: societyDetail.name,
+        description: societyDetail.description || `${societyDetail.name} biletleri Eventle'de! Tıkla, ${societyDetail.name} etkinliğine bilet satın al.`,
+        images: [societyDetail.image],
+      },
+      alternates: {
+        canonical: eventUrl,
+      },
+    };
+  } catch {
+    return {
+      title: 'Topluluk Etkinliği - Eventle',
+      description: 'Eventle\'de topluluk etkinlikleri! Tıkla, etkinliğe bilet satın al.',
+      alternates: {
+        canonical: `${BASE_DOMAIN}/topluluk/${societyId}`,
+      },
+    };
+  }
+}
+
 
 //TODO mobile ve desktop tasarımları birbirinden ayrı gidecek gibi duruyor. iyi bir ayrıştırmaya gitmek lazım
 // geçici olarak boyle :D
 
 export default async function CommunityDetailPage({ params }: CommunityDetailPageProps) {
-  const { id: communityId } = await params;
+  const { id: societyId } = await params;
 
   let societyDetail;
   try {
     societyDetail = await societyService.getSocietyDetail({
-      id: parseInt(communityId)
+      id: parseInt(societyId)
     });
   } catch (error) {
     console.error('Society detayları yüklenemedi:', error);
@@ -63,9 +113,9 @@ export default async function CommunityDetailPage({ params }: CommunityDetailPag
         }}
         organizer={{
           name: societyDetail.owner.fullName,
-          url: `https://eventle.com/topluluk/${societyDetail.id}`
+          url: `${BASE_DOMAIN}/topluluk/${societyDetail.id}`
         }}
-        url={`https://eventle.com/topluluk/${societyDetail.id}`}
+        url={`${BASE_DOMAIN}/topluluk/${societyDetail.id}`}
       />
       <FAQPage
         faqs={generateSocietyFAQ(societyDetail)}

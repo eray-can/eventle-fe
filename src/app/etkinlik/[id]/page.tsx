@@ -3,11 +3,13 @@ import Image from '@/components/ui/image';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { eventsService } from '@/services/events/service';
 import TicketProviders from '@/components/common/ticket-providers';
-import { capitalizeTitle, capitalizeAddress } from '@/lib/utils';
+import { capitalizeTitle, capitalizeAddress, BASE_DOMAIN } from '@/lib/utils';
 import EventScheduled from '@/components/seo/event-scheduled';
 import FAQ from '@/components/common/faq';
 import FAQPage from '@/components/seo/faq-page';
 import { generateEventFAQ, getEventFAQForSchema } from '@/lib/faq-generator';
+import { Metadata } from 'next';
+import { cache } from 'react';
 
 interface EventDetailPageProps {
   params: Promise<{
@@ -15,12 +17,62 @@ interface EventDetailPageProps {
   }>;
 }
 
+const getCachedEventData = cache(async (eventId: number) => {
+  return await eventsService.getExcelData(eventId);
+});
+
+export async function generateMetadata({ params }: EventDetailPageProps): Promise<Metadata> {
+  const { id: eventId } = await params;
+
+  try {
+    const eventDetail = await getCachedEventData(parseInt(eventId));
+    const event = eventDetail.response;
+    const eventUrl = `${BASE_DOMAIN}/etkinlik/${eventId}`;
+
+    return {
+      title: `${capitalizeTitle(event.name)} | Eventle`,
+      description: event.description || `${event.name} biletleri Eventle'de! Tıkla, ${event.name} etkinliğine bilet satın al.`,
+      alternates: {
+        canonical: eventUrl,
+      },
+      openGraph: {
+        title: `${capitalizeTitle(event.name)} | Eventle`,
+        description: event.description || `${event.name} biletleri Eventle'de! Tıkla, ${event.name} etkinliğine bilet satın al.`,
+        url: eventUrl,
+        siteName: 'Eventle',
+        type: 'website',
+        locale: 'tr_TR',
+        images: event.image ? [{
+          url: event.image,
+          width: 1200,
+          height: 630,
+          alt: event.name,
+        }] : [],
+      },
+      twitter: {
+        card: 'summary_large_image',
+        title: `${capitalizeTitle(event.name)} | Eventle`,
+        description: event.description || `${event.name} biletleri Eventle'de! Tıkla, ${event.name} etkinliğine bilet satın al.`,
+        images: event.image ? [event.image] : [],
+      },
+    };
+  } catch {
+    return {
+      title: "Etkinlik Bulunamadı | Eventle",
+      description: "Aradığınız etkinlik bulunamadı.",
+      alternates: {
+         canonical: `${BASE_DOMAIN}/etkinlik/${eventId}`,
+       },
+    };
+  }
+}
+
 export default async function EventDetailPage({ params }: EventDetailPageProps) {
   const { id: eventId } = await params;
 
   let eventDetail;
   try {
-    eventDetail = await eventsService.getExcelData(parseInt(eventId));
+    eventDetail = await getCachedEventData(parseInt(eventId));
   } catch (error) {
     console.error('Etkinlik detayları yüklenemedi:', error);
     return (
@@ -71,7 +123,7 @@ export default async function EventDetailPage({ params }: EventDetailPageProps) 
             addressRegion: event.city,
             postalCode: "",
             addressCountry: "TR"
-          } 
+          }
         }}
         organizer={{
           name: "Eventle",

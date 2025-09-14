@@ -1,7 +1,39 @@
 import { societyService } from '@/services/society/service';
 import type { SocietyList } from '@/types/domain';
 import SocietyPageClient from '@/components/society/society-page-client';
-import { capitalizeTitle } from '@/lib/utils';
+import { capitalizeTitle, BASE_DOMAIN } from '@/lib/utils';
+import type { Metadata } from 'next';
+
+export const metadata: Metadata = {
+  title: 'Topluluk Etkinlikleri - Eventle',
+  description: 'Mevcut society ve seansları keşfedin. Eventle\'de en kaliteli topluluk etkinliklerine katılın.',
+  keywords: 'topluluk, society, etkinlik, sosyal, buluşma, eventle',
+  openGraph: {
+    title: 'Topluluk Etkinlikleri - Eventle',
+    description: 'Mevcut society ve seansları keşfedin. Eventle\'de en kaliteli topluluk etkinliklerine katılın.',
+    url: `${BASE_DOMAIN}/topluluk`,
+    siteName: 'Eventle',
+    images: [
+      {
+        url: `${BASE_DOMAIN}/static/media/topluluk-og.jpg`,
+        width: 1200,
+        height: 630,
+        alt: 'Topluluk Etkinlikleri - Eventle'
+      }
+    ],
+    locale: 'tr_TR',
+    type: 'website'
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Topluluk Etkinlikleri - Eventle',
+    description: 'Mevcut society ve seansları keşfedin. Eventle\'de en kaliteli topluluk etkinliklerine katılın.',
+    images: [`${BASE_DOMAIN}/static/media/topluluk-og.jpg`]
+  },
+  alternates: {
+    canonical: `${BASE_DOMAIN}/topluluk`
+  }
+};
 
 async function getInitialSocieties(): Promise<SocietyList> {
   try {
