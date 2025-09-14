@@ -1,3 +1,5 @@
+import React from 'react';
+
 interface EventScheduledProps {
   name: string;
   description: string;
