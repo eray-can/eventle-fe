@@ -1,70 +1,40 @@
 'use client';
 
-import { useTranslations } from 'next-intl';
 import Link from 'next/link';
 import Image from 'next/image';
+import { Search } from '@/components/search/search';
 
 export function Header() {
-  const t = useTranslations('Common');
 
   return (
     <header className="sticky top-0 z-50 w-full border-b backdrop-blur" style={{ backgroundColor: '#030712' }}>
-      <div className="container mx-auto px-4 flex h-20 items-center justify-center relative">
-        <div className="absolute left-4 flex items-center space-x-4">
+      <div className="container mx-auto px-4 flex h-20 items-center justify-between">
+        <div className="flex items-center space-x-4 mr-3">
           <Link href="/" className="flex items-center">
+            {/* Desktop Logo */}
             <Image
               src="/static/media/eventle-uzun-logo.png"
               alt="Eventle"
               width={200}
               height={65}
-              className="h-14 w-auto"
+              className="h-14 w-auto hidden sm:block"
+              priority
+            />
+            {/* Mobile Logo */}
+            <Image
+              src="/static/media/eventle-mini-logo.webp"
+              alt="Eventle"
+              width={40}
+              height={40}
+              className="h-10 w-auto block sm:hidden"
               priority
             />
           </Link>
         </div>
 
-        <nav className="hidden md:flex items-center space-x-6">
-          <Link
-            href="/"
-            className="text-sm font-medium text-white transition-colors"
-            onMouseEnter={(e) => (e.target as HTMLElement).style.color = '#6535f3'}
-            onMouseLeave={(e) => (e.target as HTMLElement).style.color = 'white'}
-          >
-            {t('home')}
-          </Link>
-          <Link
-            href="/topluluk"
-            className="text-sm font-medium text-white transition-colors"
-            onMouseEnter={(e) => (e.target as HTMLElement).style.color = '#6535f3'}
-            onMouseLeave={(e) => (e.target as HTMLElement).style.color = 'white'}
-          >
-            {t('community')}
-          </Link>
-          <Link
-            href="/workshop"
-            className="text-sm font-medium text-white transition-colors"
-            onMouseEnter={(e) => (e.target as HTMLElement).style.color = '#6535f3'}
-            onMouseLeave={(e) => (e.target as HTMLElement).style.color = 'white'}
-          >
-            Workshop
-          </Link>
-          <Link
-            href="/hakkimizda"
-            className="text-sm font-medium text-white transition-colors"
-            onMouseEnter={(e) => (e.target as HTMLElement).style.color = '#6535f3'}
-            onMouseLeave={(e) => (e.target as HTMLElement).style.color = 'white'}
-          >
-            {t('about')}
-          </Link>
-          <Link
-            href="/iletisim"
-            className="text-sm font-medium text-white transition-colors"
-            onMouseEnter={(e) => (e.target as HTMLElement).style.color = '#6535f3'}
-            onMouseLeave={(e) => (e.target as HTMLElement).style.color = 'white'}
-          >
-            {t('contact')}
-          </Link>
-        </nav>
+        <div className="flex items-center justify-center w-full max-w-lg mx-auto">
+          <Search placeholder="Etkinlik, topluluk, workshop ara..." className="w-full" />
+        </div>
       </div>
     </header>
   );

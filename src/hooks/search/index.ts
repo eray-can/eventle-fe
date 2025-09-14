@@ -1,0 +1,1 @@
+export { useSearch, type SearchSuggestion } from './search';
