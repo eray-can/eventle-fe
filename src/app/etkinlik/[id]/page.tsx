@@ -4,6 +4,10 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { eventsService } from '@/services/events/service';
 import TicketProviders from '@/components/common/ticket-providers';
 import { capitalizeTitle, capitalizeAddress } from '@/lib/utils';
+import EventScheduled from '@/components/seo/event-scheduled';
+import FAQ from '@/components/common/faq';
+import FAQPage from '@/components/seo/faq-page';
+import { generateEventFAQ, getEventFAQForSchema } from '@/lib/faq-generator';
 
 interface EventDetailPageProps {
   params: Promise<{
@@ -36,9 +40,68 @@ export default async function EventDetailPage({ params }: EventDetailPageProps) 
   }
 
   const event = eventDetail.response;
+  const eventFAQs = generateEventFAQ({
+    name: event.name,
+    startDate: event.startDate,
+    endDate: event.endDate,
+    location: event.location,
+    fullAddress: event.fullAddress,
+    city: event.city,
+    district: event.district,
+    category: event.category,
+    url: event.url,
+    urlBugece: event.urlBugece || undefined,
+    urlBiletino: event.urlBiletino || undefined,
+    urlBiletix: event.urlBiletix || undefined,
+    urlIksv: event.urlIksv || undefined
+  });
 
   return (
-    <div className="min-h-screen bg-gray-900">
+    <>
+      <EventScheduled
+        name={event.name}
+        description={event.description || "Etkinlik açıklaması bulunamadı"}
+        startDate={event.startDate}
+        endDate={event.endDate}
+        location={{
+          name: event.location,
+          address: {
+            streetAddress: event.fullAddress,
+            addressLocality: event.district,
+            addressRegion: event.city,
+            postalCode: "",
+            addressCountry: "TR"
+          } 
+        }}
+        organizer={{
+          name: "Eventle",
+          url: "https://eventle.com"
+        }}
+        image={event.image}
+        url={`https://eventle.com/etkinlik/${event.id}`}
+        eventStatus="EventScheduled"
+        eventAttendanceMode="OfflineEventAttendanceMode"
+      />
+      <FAQPage
+        faqs={getEventFAQForSchema({
+          name: event.name,
+          startDate: event.startDate,
+          endDate: event.endDate,
+          location: event.location,
+          fullAddress: event.fullAddress,
+          city: event.city,
+          district: event.district,
+          category: event.category,
+          url: event.url,
+          urlBugece: event.urlBugece || undefined,
+          urlBiletino: event.urlBiletino || undefined,
+          urlBiletix: event.urlBiletix || undefined,
+          urlIksv: event.urlIksv || undefined
+        })}
+        pageTitle={`${event.name} - Sık Sorulan Sorular`}
+        pageDescription={`${event.name} etkinliği hakkında sık sorulan sorular ve cevapları`}
+      />
+      <div className="min-h-screen bg-gray-900">
       {/* Mobile Header with Hero Image - Hidden on Desktop */}
       <div className="lg:hidden">
         {/* Hero Image */}
@@ -137,6 +200,13 @@ export default async function EventDetailPage({ params }: EventDetailPageProps) 
           urlIksv={event.urlIksv}
           urlBiletino={event.urlBiletino}
           urlBiletix={event.urlBiletix}
+        />
+
+        {/* FAQ Section */}
+        <FAQ
+          faqs={eventFAQs}
+          title="Sık Sorulan Sorular"
+          className=""
         />
       </div>
 
@@ -251,10 +321,21 @@ export default async function EventDetailPage({ params }: EventDetailPageProps) 
                 urlBiletino={event.urlBiletino}
                 urlBiletix={event.urlBiletix}
               />
+
             </div>
+          </div>
+
+          {/* FAQ Section - Full Width */}
+          <div className="mt-12">
+            <FAQ
+              faqs={eventFAQs}
+              title="Sık Sorulan Sorular"
+              className="md:bg-gray-900/50 md:border-gray-700"
+            />
           </div>
         </div>
       </div>
-    </div>
+      </div>
+    </>
   );
 }

@@ -60,3 +60,18 @@ export function formatDuration(duration: string): string {
   
   return duration;
 }
+
+export function translateDayToTurkish(day: string): string {
+  const dayTranslations: { [key: string]: string } = {
+    'monday': 'Pazartesi',
+    'tuesday': 'Salı', 
+    'wednesday': 'Çarşamba',
+    'thursday': 'Perşembe',
+    'friday': 'Cuma',
+    'saturday': 'Cumartesi',
+    'sunday': 'Pazar'
+  };
+  
+  const lowerDay = day.toLowerCase();
+  return dayTranslations[lowerDay] || day;
+}

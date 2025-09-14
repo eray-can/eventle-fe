@@ -5,6 +5,9 @@ import { Button } from '@/components/ui/button';
 import { workshopService } from '@/services/workshop/service';
 import { EventCalendar } from '@/components/common/event-calendar';
 import { capitalizeTitle } from '@/lib/utils';
+import { FAQ } from '@/components/common/faq';
+import { generateWorkshopFAQ } from '@/lib/faq-generator';
+import { FAQPage } from '@/components/seo/faq-page';
 
 interface WorkshopDetailPageProps {
   params: Promise<{
@@ -44,6 +47,11 @@ export default async function WorkshopDetailPage({ params }: WorkshopDetailPageP
 
   return (
     <div className="min-h-screen bg-gray-900">
+      <FAQPage
+        faqs={generateWorkshopFAQ(workshopDetail)}
+        pageTitle={`${workshopDetail.name} - Sık Sorulan Sorular`}
+        pageDescription={`${workshopDetail.name} workshop etkinliği hakkında sık sorulan sorular ve cevapları.`}
+      />
       {/* Mobile Header with Hero Image - Hidden on Desktop */}
       <div className="lg:hidden">
         {/* Hero Image */}
@@ -151,6 +159,13 @@ export default async function WorkshopDetailPage({ params }: WorkshopDetailPageP
           <h3 className="text-white font-medium text-lg mb-4">Tarih ve Saat Seçin</h3>
           <EventCalendar eventDetail={workshopDetail} useWorkshopService={true} />
         </div>
+
+        {/* FAQ Section - Mobile */}
+        <FAQ
+          faqs={generateWorkshopFAQ(workshopDetail)}
+          title="Sık Sorulan Sorular"
+          className=""
+        />
       </div>
 
       {/* Fixed Bottom Purchase Section - Mobile Only */}
@@ -353,6 +368,15 @@ export default async function WorkshopDetailPage({ params }: WorkshopDetailPageP
                 </CardContent>
               </Card>
             </div>
+          </div>
+
+          {/* FAQ Section - Desktop Full Width */}
+          <div className="mt-12">
+            <FAQ
+              faqs={generateWorkshopFAQ(workshopDetail)}
+              title="Sık Sorulan Sorular"
+              className="md:bg-gray-900/50 md:border-gray-700"
+            />
           </div>
         </div>
       </div>

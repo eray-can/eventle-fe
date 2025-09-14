@@ -5,6 +5,10 @@ import { Button } from '@/components/ui/button';
 import { societyService } from '@/services/society/service';
 import { EventCalendar } from '@/components/common/event-calendar';
 import { formatDuration, capitalizeTitle } from '@/lib/utils';
+import { EventScheduled } from '@/components/seo/event-scheduled';
+import { FAQ } from '@/components/common/faq';
+import { generateSocietyFAQ } from '@/lib/faq-generator';
+import { FAQPage } from '@/components/seo/faq-page';
 
 interface CommunityDetailPageProps {
   params: Promise<{
@@ -44,6 +48,30 @@ export default async function CommunityDetailPage({ params }: CommunityDetailPag
 
   return (
     <div className="min-h-screen bg-gray-900">
+      <EventScheduled
+        name={societyDetail.name}
+        description={societyDetail.description}
+        startDate={societyDetail.sessionGroups[0]?.sessions[0]?.date}
+        endDate={societyDetail.sessionGroups[0]?.sessions[0]?.date}
+        location={societyDetail.location}
+        eventStatus="EventScheduled"
+        eventAttendanceMode="OfflineEventAttendanceMode"
+        offers={{
+          price: societyDetail.sessionGroups[0]?.sessions[0]?.price || 0,
+          priceCurrency: "TRY",
+          availability: "InStock"
+        }}
+        organizer={{
+          name: societyDetail.owner.fullName,
+          url: `https://eventle.com/topluluk/${societyDetail.id}`
+        }}
+        url={`https://eventle.com/topluluk/${societyDetail.id}`}
+      />
+      <FAQPage
+        faqs={generateSocietyFAQ(societyDetail)}
+        pageTitle={`${societyDetail.name} - Sık Sorulan Sorular`}
+        pageDescription={`${societyDetail.name} topluluk etkinliği hakkında sık sorulan sorular ve cevapları.`}
+      />
       {/* Mobile Header with Hero Image - Hidden on Desktop */}
       <div className="lg:hidden">
         {/* Hero Image */}
@@ -151,6 +179,13 @@ export default async function CommunityDetailPage({ params }: CommunityDetailPag
           <h3 className="text-white font-medium text-lg mb-4">Tarih ve Saat Seçin</h3>
           <EventCalendar eventDetail={societyDetail} />
         </div>
+
+        {/* FAQ Section - Mobile */}
+        <FAQ
+          faqs={generateSocietyFAQ(societyDetail)}
+          title="Sık Sorulan Sorular"
+          className=""
+        />
       </div>
 
       {/* Fixed Bottom Purchase Section - Mobile Only */}
@@ -353,6 +388,15 @@ export default async function CommunityDetailPage({ params }: CommunityDetailPag
                 </CardContent>
               </Card>
             </div>
+          </div>
+
+          {/* FAQ Section - Desktop Full Width */}
+          <div className="mt-12">
+            <FAQ
+              faqs={generateSocietyFAQ(societyDetail)}
+              title="Sık Sorulan Sorular"
+              className="md:bg-gray-900/50 md:border-gray-700"
+            />
           </div>
         </div>
       </div>

@@ -8,9 +8,9 @@ export async function Footer() {
   return (
     <footer className="border-t" style={{ backgroundColor: '#030712' }}>
       <div className="container mx-auto px-4 py-8 md:py-12">
-        <div className="grid grid-cols-1 md:grid-cols-5 gap-8">
-          <div className="space-y-3">
-            <div className="flex justify-start">
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-5 gap-6 md:gap-8">
+          <div className="space-y-3 sm:col-span-2 md:col-span-1">
+            <div className="flex justify-center sm:justify-start">
               <Image 
                 src="/static/media/eventle-uzun-logo.png" 
                 alt="Eventle" 
@@ -19,12 +19,12 @@ export async function Footer() {
                 className="h-12 w-auto"
               />
             </div>
-            <p className="text-sm text-gray-300">
+            <p className="text-sm text-gray-300 text-center sm:text-left">
               Şehrindeki tüm etkinlikleri tek uygulamadan<br />
               görüntüle, kendi etkinliğini oluştur<br />
               ve EventBuddy&apos;ni bul!
             </p>
-            <div className="flex space-x-3 pt-2">
+            <div className="flex space-x-3 pt-2 justify-center sm:justify-start">
               <a 
                 href="https://www.instagram.com/eventle.co/" 
                 target="_blank"
