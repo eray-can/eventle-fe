@@ -89,7 +89,7 @@ export function useEventCalendar(eventDetail: SocietyDetailInfo | undefined, use
       
       if (!sessionGroup) return [];
       
-      return sessionGroup.sessions.map(session => ({
+      const timeSlots = sessionGroup.sessions.map(session => ({
         id: session.id,
         startTime: session.startTime,
         endTime: session.endTime,
@@ -100,6 +100,22 @@ export function useEventCalendar(eventDetail: SocietyDetailInfo | undefined, use
         isAvailable: session.isAvailable,
         isValid: session.isValid,
       }));
+      
+      console.log('🔍 TimeSlots Debug:', {
+        selectedDate: selectedDate?.toISOString(),
+        sessionGroupDate: sessionGroup.date,
+        totalSlots: timeSlots.length,
+        slots: timeSlots.map(slot => ({
+          id: slot.id,
+          time: slot.startTime,
+          isAvailable: slot.isAvailable,
+          isValid: slot.isValid,
+          capacity: slot.capacity,
+          attendedCount: slot.attendedCount
+        }))
+      });
+      
+      return timeSlots;
     } catch (error) {
       console.error('Seans yükleme hatası:', error);
       return [];

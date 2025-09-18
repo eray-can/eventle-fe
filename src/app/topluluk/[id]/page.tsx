@@ -4,6 +4,8 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { societyService } from '@/services/society/service';
 import { EventCalendar } from '@/components/common/event-calendar';
+import { PurchaseSection } from '@/components/common/purchase-section';
+import { EventCalendarProvider } from '@/contexts/event-calendar';
 import { formatDuration, capitalizeTitle, BASE_DOMAIN } from '@/lib/utils';
 import { EventScheduled } from '@/components/seo/event-scheduled';
 import { FAQ } from '@/components/common/faq';
@@ -97,7 +99,8 @@ export default async function CommunityDetailPage({ params }: CommunityDetailPag
   }
 
   return (
-    <div className="min-h-screen bg-gray-900">
+    <EventCalendarProvider eventDetail={societyDetail}>
+      <div className="min-h-screen bg-gray-900">
       <EventScheduled
         name={societyDetail.name}
         description={societyDetail.description}
@@ -227,7 +230,7 @@ export default async function CommunityDetailPage({ params }: CommunityDetailPag
         {/* Mobile Calendar Section */}
         <div>
           <h3 className="text-white font-medium text-lg mb-4">Tarih ve Saat Seçin</h3>
-          <EventCalendar eventDetail={societyDetail} />
+          <EventCalendar />
         </div>
 
         {/* FAQ Section - Mobile */}
@@ -239,45 +242,8 @@ export default async function CommunityDetailPage({ params }: CommunityDetailPag
       </div>
 
       {/* Fixed Bottom Purchase Section - Mobile Only */}
-      <div className="lg:hidden fixed bottom-0 left-0 right-0 bg-gray-800 border-t border-gray-700 p-4 z-50">
-        <div className="flex items-center justify-between mb-3">
-          <div>
-            {societyDetail.sessionGroups[0]?.sessions[0]?.discountedPrice ? (
-              <div>
-                <div className="text-2xl font-bold text-white">
-                  {societyDetail.sessionGroups[0].sessions[0].discountedPrice.toLocaleString()} ₺
-                </div>
-                <div className="line-through text-gray-500 text-sm">
-                  {societyDetail.sessionGroups[0].sessions[0].price.toLocaleString()} ₺
-                </div>
-              </div>
-            ) : (
-              <div className="text-2xl font-bold text-white">
-                {societyDetail.sessionGroups[0]?.sessions[0]?.price.toLocaleString()} ₺
-              </div>
-            )}
-          </div>
-          <div className="flex items-center gap-3">
-            <div className="flex items-center border border-gray-600 rounded-lg">
-              <button className="w-10 h-10 flex items-center justify-center text-white hover:bg-gray-700">
-                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M20 12H4" />
-                </svg>
-              </button>
-              <div className="w-12 h-10 flex items-center justify-center text-white font-medium border-x border-gray-600">
-                1
-              </div>
-              <button className="w-10 h-10 flex items-center justify-center text-white hover:bg-gray-700">
-                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
-                </svg>
-              </button>
-            </div>
-          </div>
-        </div>
-        <button className="w-full bg-purple-600 hover:bg-purple-700 text-white font-semibold py-3 rounded-lg transition-colors">
-          Satın Al
-        </button>
+      <div className="lg:hidden">
+        <PurchaseSection variant="mobile" />
       </div>
 
       {/* Desktop Layout - Hidden on Mobile */}
@@ -392,51 +358,10 @@ export default async function CommunityDetailPage({ params }: CommunityDetailPag
 
 
               {/* Desktop Calendar Section */}
-              <EventCalendar eventDetail={societyDetail} />
+              <EventCalendar />
 
               {/* Desktop Purchase Section */}
-              <Card className="bg-gray-900/50 border-gray-700">
-                <CardContent className="p-6">
-                  <div className="flex items-center justify-between">
-                    <div>
-                      {societyDetail.sessionGroups[0]?.sessions[0]?.discountedPrice ? (
-                        <div>
-                          <div className="text-3xl font-bold text-white">
-                            {societyDetail.sessionGroups[0].sessions[0].discountedPrice.toLocaleString()} ₺
-                          </div>
-                          <div className="line-through text-gray-500">
-                            {societyDetail.sessionGroups[0].sessions[0].price.toLocaleString()} ₺
-                          </div>
-                        </div>
-                      ) : (
-                        <div className="text-3xl font-bold text-white">
-                          {societyDetail.sessionGroups[0]?.sessions[0]?.price.toLocaleString()} ₺
-                        </div>
-                      )}
-                    </div>
-                    <div className="flex items-center gap-4">
-                      <div className="flex items-center border border-gray-600 rounded-lg">
-                        <button className="w-12 h-12 flex items-center justify-center text-white hover:bg-gray-700 rounded-l-lg">
-                          <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M20 12H4" />
-                          </svg>
-                        </button>
-                        <div className="w-16 h-12 flex items-center justify-center text-white font-medium border-x border-gray-600">
-                          1
-                        </div>
-                        <button className="w-12 h-12 flex items-center justify-center text-white hover:bg-gray-700 rounded-r-lg">
-                          <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
-                          </svg>
-                        </button>
-                      </div>
-                      <Button className="bg-purple-600 hover:bg-purple-700 text-white px-8 py-3 text-lg font-semibold">
-                        Satın Al
-                      </Button>
-                    </div>
-                  </div>
-                </CardContent>
-              </Card>
+              <PurchaseSection variant="desktop" />
             </div>
           </div>
 
@@ -451,5 +376,6 @@ export default async function CommunityDetailPage({ params }: CommunityDetailPag
         </div>
       </div>
     </div>
+    </EventCalendarProvider>
   );
 }

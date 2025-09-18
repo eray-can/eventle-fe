@@ -1,9 +1,9 @@
 'use client';
 
 import * as React from 'react';
-import { Clock } from 'lucide-react';
+
 import { cn } from '@/lib/utils';
-import type { TimeSlot } from '@/hooks/society';
+import type { TimeSlot } from '@/hooks/common/use-event-calendar';
 
 
 export interface TimeSlotPickerProps {
@@ -35,15 +35,20 @@ export function TimeSlotPicker({
   };
 
   if (timeSlots.length === 0) {
-    return (
-      <div className={cn('p-6 text-center', className)}>
-        <Clock className="h-12 w-12 text-gray-400 mx-auto mb-3" />
-        <p className="text-gray-500 dark:text-gray-400">
-          Bu tarih için müsait seans bulunmuyor
-        </p>
-      </div>
-    );
+    return null;
   }
+
+  console.log('🎯 TimeSlotPicker Debug:', {
+    totalSlots: timeSlots.length,
+    selectedSlotId: selectedSlot?.id,
+    slots: timeSlots.map(slot => ({
+      id: slot.id,
+      time: slot.startTime,
+      isAvailable: slot.isAvailable,
+      isValid: slot.isValid,
+      disabled: !slot.isAvailable || !slot.isValid
+    }))
+  });
 
   return (
     <div className={cn('space-y-2', className)} {...props}>      
