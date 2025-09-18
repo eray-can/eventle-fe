@@ -29,10 +29,10 @@ export function EventCalendar({
 
   return (
     <div className={className}>
-      <div className="space-y-6 max-w-md mx-auto">
+      <div className="space-y-6 max-w-5xl mx-auto">
         {/* Tarih Seçici Butonu */}
         <div>
-          <button
+        <button
             onClick={toggleCalendar}
             className="w-full flex items-center justify-between p-4 bg-gray-50 dark:bg-gray-800 rounded-xl hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors border-2 border-gray-200 dark:border-gray-700"
           >
@@ -43,10 +43,10 @@ export function EventCalendar({
                   Etkinlik Tarihi
                 </div>
                 <div className="font-semibold text-gray-900 dark:text-white">
-                  {selectedDate ? selectedDate.toLocaleDateString('tr-TR', { 
-                    day: '2-digit', 
-                    month: '2-digit', 
-                    year: 'numeric' 
+                  {selectedDate ? selectedDate.toLocaleDateString('tr-TR', {
+                    day: '2-digit',
+                    month: '2-digit',
+                    year: 'numeric'
                   }) : 'Tarih Seçin'}
                 </div>
               </div>
@@ -112,9 +112,9 @@ export function EventCalendar({
                 {sessionDetail.additionalLink && (
                   <div>
                     <h4 className="text-gray-400 text-sm mb-2">Grup Linki</h4>
-                    <a 
-                      href={sessionDetail.additionalLink} 
-                      target="_blank" 
+                    <a
+                      href={sessionDetail.additionalLink}
+                      target="_blank"
                       rel="noopener noreferrer"
                       className="text-purple-400 hover:text-purple-300 text-sm underline"
                     >

@@ -2,6 +2,7 @@ import { Calendar, MapPin, CreditCard, Clock } from 'lucide-react';
 import { decodePaymentData } from '@/lib/utils';
 import { redirect } from 'next/navigation';
 import PaymentForm from '@/components/payment/payment-form';
+import { paymentAdapter } from '@/adapters';
 
 interface PaymentPageProps {
   searchParams: { data?: string };
@@ -15,14 +16,27 @@ export default async function PaymentPage({ searchParams }: PaymentPageProps) {
   }
 
   // Base64 decode
-  const paymentData = decodePaymentData(data);
+  const decodedData = decodePaymentData(data);
   
   // Gerekli alanları kontrol et
-  if (!paymentData || !paymentData.type || !paymentData.seans_id || !paymentData.ticket_count) {
+  if (!decodedData || !decodedData.type || !decodedData.seans_id || !decodedData.ticket_count) {
     redirect('/');
   }
 
-  const totalAmount = paymentData.ticket_count * 10010; // Örnek fiyat
+  // Payment adapter ile gerçek session verilerini çek
+  let sessionData;
+  try {
+    sessionData = await paymentAdapter.getPaymentSessionDetail({
+      id: decodedData.seans_id.toString(),
+      category: decodedData.type as 'society' | 'workshop'
+    });
+  } catch (error) {
+    console.error('Payment session data fetch error:', error);
+    redirect('/');
+  }
+
+  const effectivePrice = sessionData.discountedPrice || sessionData.price;
+  const totalAmount = decodedData.ticket_count * effectivePrice;
 
   return (
     <div className="min-h-screen bg-gray-900 text-white">
@@ -42,19 +56,19 @@ export default async function PaymentPage({ searchParams }: PaymentPageProps) {
                       <span className="text-white text-sm lg:text-lg font-bold">ML</span>
                     </div>
                     <div className="flex-1 min-w-0">
-                      <h4 className="font-medium text-white mb-1 text-sm lg:text-base">Mozaik Lamba Atölyesi</h4>
+                      <h4 className="font-medium text-white mb-1 text-sm lg:text-base">{sessionData.title}</h4>
                       <div className="flex items-center text-xs lg:text-sm text-purple-400 mb-1">
                         <MapPin className="w-3 h-3 mr-1 flex-shrink-0" />
-                        <span>İstanbul</span>
+                        <span>{sessionData.location || 'Konum belirtilmemiş'}</span>
                       </div>
-                      <div className="text-xs lg:text-sm text-gray-400 mb-1">Workshop</div>
+                      <div className="text-xs lg:text-sm text-gray-400 mb-1">{sessionData.category === 'society' ? 'Topluluk' : 'Workshop'}</div>
                       <div className="flex items-center text-xs lg:text-sm text-blue-400 mb-1">
                         <Calendar className="w-3 h-3 mr-1 flex-shrink-0" />
-                        <span>2025-08-26</span>
+                        <span>{sessionData.sessionDate}</span>
                       </div>
                       <div className="flex items-center text-xs lg:text-sm text-blue-400">
                          <Clock className="w-3 h-3 mr-1 flex-shrink-0" />
-                         <span>09:00</span>
+                         <span>{sessionData.sessionTime}</span>
                        </div>
                      </div>
                    </div>
@@ -62,7 +76,30 @@ export default async function PaymentPage({ searchParams }: PaymentPageProps) {
                    <div className="border-t border-gray-600 pt-3 mt-3">
                      <div className="flex justify-between items-center">
                        <span className="text-xs lg:text-sm text-gray-400">Adet</span>
-                       <span className="text-xs lg:text-sm font-medium">1</span>
+                       <span className="text-xs lg:text-sm font-medium">{decodedData.ticket_count}</span>
+                     </div>
+                     {sessionData.discountedPrice ? (
+                       <>
+                         <div className="flex justify-between items-center">
+                           <span className="text-xs lg:text-sm text-gray-400">Birim Fiyat</span>
+                           <span className="text-xs lg:text-sm font-medium line-through text-gray-500">₺{sessionData.price.toLocaleString('tr-TR')}</span>
+                         </div>
+                         <div className="flex justify-between items-center">
+                           <span className="text-xs lg:text-sm text-green-400">İndirimli Fiyat ({sessionData.discountPercentage}% indirim)</span>
+                           <span className="text-xs lg:text-sm font-medium text-green-400">₺{sessionData.discountedPrice.toLocaleString('tr-TR')}</span>
+                         </div>
+                       </>
+                     ) : (
+                       <div className="flex justify-between items-center">
+                         <span className="text-xs lg:text-sm text-gray-400">Birim Fiyat</span>
+                         <span className="text-xs lg:text-sm font-medium">₺{sessionData.price.toLocaleString('tr-TR')}</span>
+                       </div>
+                     )}
+                     <div className="border-t border-gray-600 pt-2 mt-2">
+                       <div className="flex justify-between items-center">
+                         <span className="text-sm lg:text-base font-semibold">Toplam</span>
+                         <span className="text-sm lg:text-base font-semibold text-green-400">₺{totalAmount.toLocaleString('tr-TR')}</span>
+                       </div>
                      </div>
                    </div>
                   
@@ -77,7 +114,7 @@ export default async function PaymentPage({ searchParams }: PaymentPageProps) {
             <div className="lg:col-span-2 lg:order-1 order-2 space-y-6">
               <div className="bg-gray-800/50 rounded-xl p-6 border border-gray-700">
                 <h2 className="text-lg font-semibold mb-6">İletişim Bilgileri</h2>
-                <PaymentForm paymentData={paymentData} />
+                <PaymentForm paymentData={decodedData} />
               </div>
               
               {/* Ödeme Yöntemi */}
