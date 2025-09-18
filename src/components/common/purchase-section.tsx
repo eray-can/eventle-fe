@@ -3,7 +3,8 @@
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { useEventCalendarContext } from '@/contexts/event-calendar';
-import { cn } from '@/lib/utils';
+import { cn, encodePaymentData, type PaymentData } from '@/lib/utils';
+import { useRouter } from 'next/navigation';
 
 interface PurchaseSectionProps {
   variant?: 'mobile' | 'desktop';
@@ -16,6 +17,7 @@ export function PurchaseSection({
   className,
   onPurchase 
 }: PurchaseSectionProps) {
+  const router = useRouter();
   const {
     selectedTimeSlot,
     quantity,
@@ -36,8 +38,23 @@ export function PurchaseSection({
   };
 
   const handlePurchaseClick = () => {
-    if (!isDisabled && onPurchase) {
-      onPurchase();
+    if (!isDisabled) {
+      // Base64 ile şifrelenmiş veri oluştur
+      const paymentData: PaymentData = {
+        type: 'workshop', // veya 'society' gibi dinamik olabilir
+        seans_id: selectedTimeSlot?.id || 12,
+        ticket_count: quantity
+      };
+      
+      const encodedData = encodePaymentData(paymentData);
+      
+      // Ödeme sayfasına yönlendir
+      router.push(`/odeme?data=${encodedData}`);
+      
+      // Eğer onPurchase callback'i varsa çalıştır
+      if (onPurchase) {
+        onPurchase();
+      }
     }
   };
 

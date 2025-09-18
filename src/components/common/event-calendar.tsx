@@ -29,7 +29,7 @@ export function EventCalendar({
 
   return (
     <div className={className}>
-      <div className="space-y-6">
+      <div className="space-y-6 max-w-md mx-auto">
         {/* Tarih Seçici Butonu */}
         <div>
           <button

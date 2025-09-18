@@ -77,3 +77,41 @@ export function translateDayToTurkish(day: string): string {
   const lowerDay = day.toLowerCase();
   return dayTranslations[lowerDay] || day;
 }
+
+// Base64 şifreleme ve çözme fonksiyonları
+export function encodeToBase64(data: unknown): string {
+  try {
+    const jsonString = JSON.stringify(data);
+    return btoa(jsonString);
+  } catch (error) {
+    console.error('Base64 encoding error:', error);
+    return '';
+  }
+}
+
+export function decodeFromBase64<T>(encodedData: string): T | null {
+  try {
+    const decodedString = atob(encodedData);
+    return JSON.parse(decodedString) as T;
+  } catch (error) {
+    console.error('Base64 decoding error:', error);
+    return null;
+  }
+}
+
+// Ödeme verisi için özel tip
+export interface PaymentData {
+  type: string;
+  seans_id: number;
+  ticket_count: number;
+}
+
+// Ödeme verisi şifreleme
+export function encodePaymentData(data: PaymentData): string {
+  return encodeToBase64(data);
+}
+
+// Ödeme verisi çözme
+export function decodePaymentData(encodedData: string): PaymentData | null {
+  return decodeFromBase64<PaymentData>(encodedData);
+}
