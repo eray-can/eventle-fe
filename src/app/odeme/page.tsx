@@ -3,6 +3,7 @@ import { decodePaymentData } from '@/lib/utils';
 import { redirect } from 'next/navigation';
 import PaymentForm from '@/components/payment/payment-form';
 import { paymentAdapter } from '@/adapters';
+import Image from '@/components/ui/image';
 
 interface PaymentPageProps {
   searchParams: { data?: string };
@@ -10,14 +11,14 @@ interface PaymentPageProps {
 
 export default async function PaymentPage({ searchParams }: PaymentPageProps) {
   const data = searchParams.data;
-  
+
   if (!data) {
     redirect('/');
   }
 
   // Base64 decode
   const decodedData = decodePaymentData(data);
-  
+
   // Gerekli alanları kontrol et
   if (!decodedData || !decodedData.type || !decodedData.seans_id || !decodedData.ticket_count) {
     redirect('/');
@@ -43,25 +44,31 @@ export default async function PaymentPage({ searchParams }: PaymentPageProps) {
       <div className="container mx-auto px-4 py-8">
         <div className="max-w-4xl mx-auto">
           <h1 className="text-2xl font-bold mb-8">Ödeme</h1>
-          
+
           <div className="grid lg:grid-cols-3 gap-6">
             {/* Sipariş Özeti - Mobilde üstte */}
              <div className="lg:col-span-1 lg:order-2 order-1">
                <div className="bg-gray-800/50 rounded-xl p-6 lg:p-8 border border-gray-700 lg:sticky lg:top-8">
                  <h3 className="text-base lg:text-lg font-semibold mb-4 lg:mb-6">Sipariş Özeti</h3>
-                
+
                 <div className="space-y-3 lg:space-y-4">
                   <div className="flex items-start space-x-3 lg:space-x-4">
-                    <div className="w-16 h-16 lg:w-20 lg:h-20 bg-gradient-to-br from-purple-500 to-pink-500 rounded-lg flex items-center justify-center flex-shrink-0">
-                      <span className="text-white text-sm lg:text-lg font-bold">ML</span>
+                    <div className="w-16 h-16 lg:w-20 lg:h-20 rounded-lg overflow-hidden flex-shrink-0">
+                      <Image
+                        src={sessionData.imageUrl || '/static/media/default-event.jpg'}
+                        alt={sessionData.title}
+                        width={200}
+                        height={200}
+                        className="w-full h-full object-cover"
+                        fallbackSrc="/static/media/default-event-image.jpg"
+                      />
                     </div>
-                    <div className="flex-1 min-w-0">
-                      <h4 className="font-medium text-white mb-1 text-sm lg:text-base">{sessionData.title}</h4>
+                    <div className="flex-1 min-w-0 max-w-none">
+                      <h4 className="font-medium text-white mb-1 text-sm lg:text-base leading-relaxed break-words">{sessionData.title}</h4>
                       <div className="flex items-center text-xs lg:text-sm text-purple-400 mb-1">
                         <MapPin className="w-3 h-3 mr-1 flex-shrink-0" />
                         <span>{sessionData.location || 'Konum belirtilmemiş'}</span>
                       </div>
-                      <div className="text-xs lg:text-sm text-gray-400 mb-1">{sessionData.category === 'society' ? 'Topluluk' : 'Workshop'}</div>
                       <div className="flex items-center text-xs lg:text-sm text-blue-400 mb-1">
                         <Calendar className="w-3 h-3 mr-1 flex-shrink-0" />
                         <span>{sessionData.sessionDate}</span>
@@ -72,7 +79,7 @@ export default async function PaymentPage({ searchParams }: PaymentPageProps) {
                        </div>
                      </div>
                    </div>
-                   
+
                    <div className="border-t border-gray-600 pt-3 mt-3">
                      <div className="flex justify-between items-center">
                        <span className="text-xs lg:text-sm text-gray-400">Adet</span>
@@ -102,21 +109,21 @@ export default async function PaymentPage({ searchParams }: PaymentPageProps) {
                        </div>
                      </div>
                    </div>
-                  
 
-                  
+
+
 
                 </div>
               </div>
             </div>
-            
+
             {/* İletişim Bilgileri ve Ödeme Yöntemi - Mobilde altta */}
             <div className="lg:col-span-2 lg:order-1 order-2 space-y-6">
               <div className="bg-gray-800/50 rounded-xl p-6 border border-gray-700">
                 <h2 className="text-lg font-semibold mb-6">İletişim Bilgileri</h2>
-                <PaymentForm paymentData={decodedData} />
+                <PaymentForm paymentData={sessionData} />
               </div>
-              
+
               {/* Ödeme Yöntemi */}
                <div className="bg-gray-800/50 rounded-xl p-6 border border-gray-700">
                  <h3 className="text-lg font-semibold mb-6">Bir Ödeme Yöntemi Seçin</h3>
@@ -142,7 +149,7 @@ export default async function PaymentPage({ searchParams }: PaymentPageProps) {
                      </div>
                    </label>
                  </div>
-                 
+
                  <div className="space-y-4 mt-6">
                    <label className="flex items-start space-x-3">
                      <input
@@ -154,7 +161,7 @@ export default async function PaymentPage({ searchParams }: PaymentPageProps) {
                      </span>
                    </label>
                  </div>
-                 
+
                  <button
                    type="button"
                    className="w-full bg-blue-600 hover:bg-blue-700 disabled:bg-gray-600 disabled:opacity-50 text-white py-2 lg:py-4 px-4 lg:px-6 rounded-xl font-semibold text-base lg:text-lg transition-all duration-200 mt-6"

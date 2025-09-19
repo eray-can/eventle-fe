@@ -1,13 +1,15 @@
 import type { Workshop, SocietyList, SocietyDetailInfo, WorkshopSession, WorkshopSessionGroup, WorkshopOwner, SessionDetail, Category } from '@/types/domain';
 import type {
   GetAvailableSeansItemsResponse,
-  GetSocietyDetailResponse,
+  WorkshopItem
+} from '@/types/api/workshop';
+import type {
   SeansItem,
   SeansDateGroup,
   WorkshopOwner as ApiWorkshopOwner,
-  SessionDetailData
-} from '@/types/api';
-import type { WorkshopItem } from '@/types/api';
+  SessionDetailData,
+  GetSocietyDetailResponse
+} from '@/types/api/society';
 
 export const mapWorkshopItem = (item: WorkshopItem): Workshop => ({
   id: item.id,

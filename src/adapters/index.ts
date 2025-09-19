@@ -1,1 +1,1 @@
-export { paymentAdapter } from './payment';
+export { paymentAdapter } from './payment/payment-adapter';

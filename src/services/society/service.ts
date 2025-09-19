@@ -1,13 +1,15 @@
 import { httpApiClient } from '../clients/api-client';
 import type { SocietyList, SocietyDetailInfo, SessionDetail } from '@/types/domain';
 import type {
-  GetAvailableSeansItemsRequest,
-  GetAvailableSeansItemsResponse,
   GetSocietyDetailRequest,
   GetSocietyDetailResponse,
   GetSessionDetailRequest,
   GetSessionDetailResponse
-} from '@/types/api';
+} from '@/types/api/society';
+import type {
+  GetAvailableSeansItemsRequest,
+  GetAvailableSeansItemsResponse
+} from '@/types/api/workshop';
 import { mapSocietyList, mapSocietyDetail, mapSessionDetail } from '@/mappers/society';
 
 const AVAILABLE_SEANS_ITEMS_ENDPOINT = 'api/society/public-seans-to-one/';

@@ -15,7 +15,7 @@ interface PurchaseSectionProps {
 export function PurchaseSection({ 
   variant = 'desktop', 
   className,
-  onPurchase 
+  onPurchase
 }: PurchaseSectionProps) {
   const router = useRouter();
   const {
@@ -26,6 +26,7 @@ export function PurchaseSection({
     availableStock,
     totalPrice,
     originalPrice,
+    category: contextCategory,
   } = useEventCalendarContext();
 
   const hasDiscount = selectedTimeSlot?.discountedPrice && selectedTimeSlot.discountedPrice < selectedTimeSlot.price;
@@ -41,7 +42,7 @@ export function PurchaseSection({
     if (!isDisabled) {
       // Base64 ile şifrelenmiş veri oluştur
       const paymentData: PaymentData = {
-        type: 'workshop', // veya 'society' gibi dinamik olabilir
+        type: contextCategory,
         seans_id: selectedTimeSlot?.id || 12,
         ticket_count: quantity
       };

@@ -32,6 +32,7 @@ export interface EventCalendarContextType {
   availableStock: number;
   totalPrice: number;
   originalPrice: number;
+  category: 'workshop' | 'society';
 }
 
 const EventCalendarContext = createContext<EventCalendarContextType | undefined>(undefined);
@@ -48,6 +49,8 @@ export function EventCalendarProvider({
   useWorkshopService 
 }: EventCalendarProviderProps) {
   const eventCalendarData = useEventCalendar(eventDetail, useWorkshopService);
+  
+  const category: 'workshop' | 'society' = useWorkshopService ? 'workshop' : 'society';
   const [quantity, setQuantityState] = React.useState(1);
 
   // Güvenli setQuantity fonksiyonu - maksimum bilet sayısını kontrol eder
@@ -113,6 +116,7 @@ export function EventCalendarProvider({
     availableStock,
     totalPrice,
     originalPrice,
+    category,
   };
 
   return (

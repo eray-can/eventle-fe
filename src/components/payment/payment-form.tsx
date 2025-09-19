@@ -1,7 +1,7 @@
 'use client';
 
 import { useState } from 'react';
-import { PaymentData } from '@/lib/utils';
+import { PaymentData } from '@/types/domain';
 
 interface PaymentFormProps {
   paymentData: PaymentData;

@@ -3,11 +3,13 @@ import type { SocietyList, SocietyDetailInfo, SessionDetail } from '@/types/doma
 import type {
   GetAvailableSeansItemsRequest,
   GetAvailableSeansItemsResponse,
+  GetWorkshopDetailResponse
+} from '@/types/api/workshop';
+import type {
   GetSocietyDetailRequest,
-  GetSocietyDetailResponse,
   GetSessionDetailRequest,
   GetSessionDetailResponse
-} from '@/types/api';
+} from '@/types/api/society';
 import { mapSocietyList, mapSocietyDetail, mapSessionDetail } from '@/mappers/society';
 
 const AVAILABLE_SEANS_ITEMS_ENDPOINT = 'api/seller/public-seans-to-one/';
@@ -46,7 +48,7 @@ export class WorkshopService {
     const { id } = request;
     const url = `${WORKSHOP_DETAIL_ENDPOINT}${id}/`;
 
-    const workshopData = await httpApiClient.get<GetSocietyDetailResponse['response']>(url);
+    const workshopData = await httpApiClient.get<GetWorkshopDetailResponse['response']>(url);
     return mapSocietyDetail(workshopData);
   }
 
