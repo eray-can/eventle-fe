@@ -2,6 +2,7 @@ import {iyzicoClient} from '@/services/clients/iyzico-client';
 import {v4 as uuidv4} from 'uuid';
 import type {IyzicoCheckoutFormPayload, IyzicoResponse} from '@/types/iyzico';
 import type {PaymentRequest} from '@/types/domain/payment';
+import { BASE_DOMAIN, encodeToBase64 } from '@/lib/utils';
 
 const CHECKOUT_FORM_ENDPOINT = '/payment/iyzipos/checkoutform/initialize/auth/ecom';
 
@@ -10,12 +11,20 @@ export class IyzicoService {
         return '85.34.78.112';
     }
 
-    async createCheckoutForm(request: PaymentRequest, callbackUrl: string): Promise<IyzicoResponse> {
+    async createCheckoutForm(request: PaymentRequest, callbackUrl?: string): Promise<IyzicoResponse> {
 
         const ipAddress = this.getPublicIp();
         const fullName = `${request.customerInfo.name.trim()} ${request.customerInfo.surname.trim()}`.trim();
 
         const basePrice = parseFloat((request.amount / 1.20).toFixed(2));
+
+        // Base64 encoded data
+        const encodedData = encodeToBase64({
+            type: "workshop",
+            seans_id: 323,
+            ticket_count: 1,
+            original_callback_url: callbackUrl
+        });
 
         const payload: IyzicoCheckoutFormPayload = {
             locale: "eng",
@@ -55,7 +64,7 @@ export class IyzicoService {
                     itemType: "VIRTUAL"
                 }
             ],
-            callbackUrl: callbackUrl,
+            callbackUrl: `${BASE_DOMAIN}/isleniyor?data=${encodedData}`,
             paidPrice: request.amount
         };
 
