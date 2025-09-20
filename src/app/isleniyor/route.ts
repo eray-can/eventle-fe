@@ -35,53 +35,75 @@ export async function POST(request: NextRequest) {
       <!DOCTYPE html>
       <html>
         <head>
-          <title>İşleniyor...</title>
+          <title>Eventle | İşleniyor...</title>
           <meta charset="utf-8">
           <meta name="viewport" content="width=device-width, initial-scale=1">
+          <link rel="preconnect" href="https://fonts.googleapis.com">
+          <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+          <link href="https://fonts.googleapis.com/css2?family=Geist:wght@300;400;500;600;700&display=swap" rel="stylesheet">
           <style>
+            :root {
+              --background: 0 0% 100%;
+              --foreground: 222.2 84% 4.9%;
+              --card: 0 0% 100%;
+              --card-foreground: 222.2 84% 4.9%;
+              --primary: 221.2 83.2% 53.3%;
+              --primary-foreground: 210 40% 98%;
+              --secondary: 210 40% 96%;
+              --secondary-foreground: 222.2 84% 4.9%;
+              --muted: 210 40% 96%;
+              --muted-foreground: 215.4 16.3% 46.9%;
+              --accent: 210 40% 96%;
+              --accent-foreground: 222.2 84% 4.9%;
+              --destructive: 0 84.2% 60.2%;
+              --destructive-foreground: 210 40% 98%;
+              --border: 214.3 31.8% 91.4%;
+              --input: 214.3 31.8% 91.4%;
+              --ring: 221.2 83.2% 53.3%;
+              --radius: 0.75rem;
+            }
+            
             * {
               margin: 0;
               padding: 0;
               box-sizing: border-box;
             }
             body { 
-              font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-              background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+              font-family: 'Geist', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+              background-color: hsl(var(--background));
               min-height: 100vh;
               display: flex;
               justify-content: center;
               align-items: center;
-              color: #333;
+              color: hsl(var(--foreground));
             }
             .container {
-              background: white;
-              padding: 60px 40px;
-              border-radius: 20px;
-              box-shadow: 0 25px 50px rgba(0,0,0,0.15);
+              background: hsl(var(--card));
+              padding: 2.5rem 2rem;
+              border-radius: var(--radius);
+              box-shadow: 0 10px 25px rgba(0,0,0,0.08);
               text-align: center;
               max-width: 500px;
               width: 90%;
               position: relative;
               overflow: hidden;
               transition: all 0.3s ease;
+              border: 1px solid hsl(var(--border));
             }
-            .container::before {
-              content: '';
-              position: absolute;
-              top: 0;
-              left: 0;
-              right: 0;
-              height: 4px;
-              background: linear-gradient(90deg, #667eea, #764ba2);
+            .logo {
+              margin-bottom: 1.5rem;
+              width: 120px;
+              height: auto;
             }
             .spinner {
-              width: 60px;
-              height: 60px;
-              border: 4px solid #f3f3f3;
-              border-top: 4px solid #667eea;
+              width: 50px;
+              height: 50px;
+              border: 3px solid hsl(var(--secondary));
+              border-top: 3px solid hsl(var(--primary));
               border-radius: 50%;
-              animation: spin 1s linear infinite;
-              margin: 0 auto 30px;
+              animation: spin 0.8s linear infinite;
+              margin: 0 auto 1.5rem;
+              box-shadow: 0 0 10px rgba(0,0,0,0.05);
             }
             @keyframes spin {
               0% { transform: rotate(0deg); }
@@ -89,7 +111,7 @@ export async function POST(request: NextRequest) {
             }
             .loading-dots {
               display: inline-block;
-              margin-left: 10px;
+              margin-left: 5px;
             }
             .loading-dots::after {
               content: '';
@@ -100,89 +122,58 @@ export async function POST(request: NextRequest) {
               40% { content: '..'; }
               60%, 100% { content: '...'; }
             }
-            .form-info {
-              background: #e3f2fd;
-              border: 1px solid #bbdefb;
-              border-radius: 10px;
-              padding: 15px;
-              margin: 15px 0;
-              font-size: 14px;
-              color: #1565c0;
-            }
             h1 {
-              font-size: 28px;
-              margin-bottom: 15px;
-              color: #333;
+              font-size: 1.5rem;
+              margin-bottom: 0.75rem;
+              color: hsl(var(--foreground));
               font-weight: 600;
             }
             .subtitle {
-              font-size: 16px;
-              color: #666;
-              margin-bottom: 30px;
+              font-size: 0.95rem;
+              color: hsl(var(--muted-foreground));
+              margin-bottom: 1.5rem;
               line-height: 1.5;
-            }
-            .info-box {
-              background: #f8f9fa;
-              border: 1px solid #e9ecef;
-              border-radius: 10px;
-              padding: 20px;
-              margin: 20px 0;
-              text-align: left;
-            }
-            .info-title {
-              font-weight: 600;
-              color: #495057;
-              margin-bottom: 10px;
-              font-size: 14px;
-            }
-            .token-display {
-              background: #fff;
-              border: 1px solid #dee2e6;
-              border-radius: 6px;
-              padding: 12px;
-              font-family: 'Courier New', monospace;
-              font-size: 12px;
-              word-break: break-all;
-              color: #495057;
             }
             .progress-bar {
               width: 100%;
-              height: 6px;
-              background: #e9ecef;
-              border-radius: 3px;
+              height: 4px;
+              background: hsl(var(--secondary));
+              border-radius: 2px;
               overflow: hidden;
-              margin: 20px 0;
+              margin: 1.5rem 0 0.5rem;
             }
             .progress-fill {
               height: 100%;
-              background: linear-gradient(90deg, #667eea, #764ba2);
+              background: hsl(var(--primary));
               width: 0%;
-              animation: progress 3s ease-in-out;
+              animation: progress 2.5s ease-in-out forwards;
             }
             @keyframes progress {
               0% { width: 0%; }
               100% { width: 100%; }
             }
-            .countdown {
-              font-size: 18px;
-              font-weight: 600;
-              color: #667eea;
-              margin-top: 15px;
+            .progress-text {
+              font-size: 0.8rem;
+              color: hsl(var(--muted-foreground));
+              margin-top: 0.5rem;
+              text-align: right;
             }
           </style>
         </head>
         <body>
           <div class="container">
-            <div class="spinner"></div>
-            <h1>⚡ İşleniyor<span class="loading-dots"></span></h1>
+            <img src="/static/media/eventle-transparan-logo.webp" alt="Eventle Logo" class="logo">
+            <div class="spinner" style="width: 60px; height: 60px; border-width: 4px;"></div>
+            <h1>İşleminiz Devam Ediyor<span class="loading-dots"></span></h1>
             <p class="subtitle">
-              Ödeme bilgileriniz işleniyor ve sonuç sayfasına aktarılıyor.
-              <br>Lütfen sayfayı kapatmayın.
+              Ödeme bilgileriniz güvenli bir şekilde işleniyor ve sonuç sayfasına aktarılıyor.
+              <br>Lütfen bu sayfadan ayrılmayın.
             </p>
             
-            <div class="progress-bar">
-              <div class="progress-fill"></div>
+            <div class="progress-bar" style="height: 6px; box-shadow: inset 0 1px 2px rgba(0,0,0,0.1);">
+              <div class="progress-fill" style="transition: width 0.3s ease-out;"></div>
             </div>
+            <div class="progress-text">Yönlendiriliyorsunuz...</div>
           </div>
           
           <script>
@@ -190,10 +181,13 @@ export async function POST(request: NextRequest) {
             const postData = ${JSON.stringify(postData)};
             localStorage.setItem('sonuc_post_data', JSON.stringify(postData));
             
-            // Hemen yönlendir
+            // Hemen yönlendirme (0.5 saniye sonra)
+            document.querySelector('.progress-fill').style.transition = 'width 0.5s ease-out';
+            document.querySelector('.progress-fill').style.width = '100%';
+            
             setTimeout(() => {
               window.location.href = '${redirectUrl.toString()}';
-            }, 500);
+            }, 500); // 0.5 saniye (500ms) sonra yönlendir
           </script>
         </body>
       </html>
