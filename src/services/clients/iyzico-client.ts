@@ -3,6 +3,11 @@ import {ApiClient} from '@/lib/http';
 import {IyzicoConfig, IyzicoRequest, IyzicoResponse} from '@/types/iyzico';
 import {generateRandomString} from '@/lib/utils';
 
+// Iyzico API sabitleri
+const IYZICO_API_KEY = 'sandbox-fNm91IZjhMqgeYIDsBEWIGXtmBMSHQAa';
+const IYZICO_SECRET_KEY = 'sandbox-NVEPiHRuEnqcoSgMSUISW1EXRpEtlFcI';
+const IYZICO_BASE_URL = 'https://sandbox-api.iyzipay.com';
+
 export class IyzicoClient {
     private config: IyzicoConfig;
     private apiClient: ApiClient;
@@ -59,9 +64,9 @@ export class IyzicoClient {
 }
 
 export const iyzicoClient = new IyzicoClient({
-    apiKey: process.env.IYZICO_API_KEY || '',
-    secretKey: process.env.IYZICO_SECRET_KEY || '',
-    baseUrl: process.env.IYZICO_BASE_URL || 'https://sandbox-api.iyzipay.com'
+    apiKey: IYZICO_API_KEY,
+    secretKey: IYZICO_SECRET_KEY,
+    baseUrl: IYZICO_BASE_URL
 });
 
 export type {IyzicoConfig, IyzicoRequest, IyzicoResponse};
