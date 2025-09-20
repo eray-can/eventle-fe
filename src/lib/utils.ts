@@ -116,3 +116,16 @@ export function encodePaymentData(data: EncodedPaymentData): string {
 export function decodePaymentData(encodedData: string): EncodedPaymentData | null {
   return decodeFromBase64<EncodedPaymentData>(encodedData);
 }
+
+// Random string generator
+export function generateRandomString(length: number = 9): string {
+  const timestamp = Date.now().toString();
+  const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+  let randomSuffix = '';
+
+  for (let i = 0; i < length; i++) {
+    randomSuffix += characters.charAt(Math.floor(Math.random() * characters.length));
+  }
+
+  return timestamp + randomSuffix;
+}

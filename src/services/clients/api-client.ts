@@ -12,13 +12,17 @@ const apiClient = new ApiClient({
 });
 
 export class HttpApiClient {
+  getBaseURL(): string {
+    return apiClient.getBaseURL();
+  }
+
   private async handleResponse<T>(promise: Promise<ApiResponse<T>>): Promise<T> {
     const result = await promise;
-    
+
     if (!result.status) {
       throw new Error(result.message || 'API request failed');
     }
-    
+
     return result.response;
   }
 

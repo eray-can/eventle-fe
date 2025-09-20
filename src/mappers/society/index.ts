@@ -68,7 +68,7 @@ const mapWorkshopOwner = (owner: ApiWorkshopOwner): WorkshopOwner => ({
 });
 
 export const mapSocietyDetail = (workshop: GetSocietyDetailResponse['response']): SocietyDetailInfo => {
-  console.log('Workshop Data:', JSON.stringify(workshop, null, 2));
+  
   
   if (!workshop.id) {
     console.error('Workshop ID bulunamadı:', workshop);
@@ -110,7 +110,7 @@ export const mapSocietyDetail = (workshop: GetSocietyDetailResponse['response'])
 };
 
 export const mapSessionDetail = (session: SessionDetailData): SessionDetail => {
-  console.log('Mapping session detail:', JSON.stringify(session, null, 2));
+
   
   if (!session) {
     throw new Error('Session data is undefined');

@@ -38,17 +38,7 @@ export function TimeSlotPicker({
     return null;
   }
 
-  console.log('🎯 TimeSlotPicker Debug:', {
-    totalSlots: timeSlots.length,
-    selectedSlotId: selectedSlot?.id,
-    slots: timeSlots.map(slot => ({
-      id: slot.id,
-      time: slot.startTime,
-      isAvailable: slot.isAvailable,
-      isValid: slot.isValid,
-      disabled: !slot.isAvailable || !slot.isValid
-    }))
-  });
+
 
   return (
     <div className={cn('space-y-2', className)} {...props}>      

@@ -118,6 +118,8 @@ export default function PaymentForm() {
         />
         {showErrors && errors.email && <p className="text-red-400 text-sm mt-1">{errors.email}</p>}
       </div>
+      
+
     </form>
   );
 }

@@ -17,7 +17,7 @@ export default function WorkshopSocietySlider({ societyList, title = "Popüler E
   const scrollRef = useRef<HTMLDivElement>(null);
 
   const scrollLeft = () => {
-    console.log('Scroll left clicked');
+
     if (scrollRef.current) {
       scrollRef.current.scrollBy({
         left: -400,
@@ -27,7 +27,7 @@ export default function WorkshopSocietySlider({ societyList, title = "Popüler E
   };
 
   const scrollRight = () => {
-    console.log('Scroll right clicked');
+
     if (scrollRef.current) {
       scrollRef.current.scrollBy({
         left: 400,

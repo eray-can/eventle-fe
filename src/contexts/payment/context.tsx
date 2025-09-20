@@ -3,7 +3,7 @@
 import React, { createContext, useContext, useState, ReactNode } from 'react';
 import { PaymentFormData } from '@/hooks/payment';
 import type { EncodedPaymentData } from '@/lib/utils';
-
+import { processPayment } from '@/server/payment/actions';
 import type { PaymentData } from '@/types/domain';
 
 interface SessionData extends PaymentData {
@@ -44,21 +44,50 @@ export function PaymentProvider({ children, sessionData, decodedData, totalAmoun
   const [formData, setFormData] = useState<PaymentFormData | null>(null);
   const [termsError, setTermsError] = useState('');
 
-  const handlePayment = (data: PaymentFormData) => {
+  const handlePayment = async (data: PaymentFormData) => {
     if (!isTermsAccepted) {
       setTermsError('Sözleşmeleri kabul etmeniz gerekmektedir.');
       return;
     }
-    
-    // Ödeme işlemi burada yapılacak
-    console.log('Payment processing:', {
-      sessionData,
-      formData: data,
-      decodedData,
-      totalAmount
-    });
-    
-    alert('Ödeme işlemi başlatılıyor...');
+
+    try {
+
+      const result = await processPayment({
+        customerInfo: {
+          name: data.name,
+          surname: data.surname,
+          email: data.email,
+          phone: data.phone
+        },
+        sessionData: {
+          sessionId: decodedData.seans_id?.toString() || '',
+          title: (sessionData.title as string) || '',
+          category: decodedData.type as 'society' | 'workshop',
+          price: (sessionData.price as number) || 0,
+          discountedPrice: sessionData.discountedPrice as number | undefined,
+          imageUrl: sessionData.imageUrl as string | undefined,
+          location: (sessionData.location as string) || '',
+          sessionDate: (sessionData.sessionDate as string) || '',
+          sessionTime: (sessionData.sessionTime as string) || ''
+        },
+        totalAmount,
+        ticketCount: (decodedData.ticket_count as number) || 1,
+        seansItemId: (decodedData.seans_id as number) || 0,
+        termsAccepted: isTermsAccepted
+      });
+
+
+
+      if (!result.success) {
+        console.error(`Ödeme hatası: ${result.errorMessage}`);
+      } else if (result.shouldRedirect && result.redirectUrl) {
+
+        window.location.href = result.redirectUrl;
+      }
+    } catch (error) {
+      console.error('Payment error:', error);
+      console.error('Ödeme işlemi sırasında bir hata oluştu.');
+    }
   };
 
   const value: PaymentContextType = {

@@ -101,19 +101,7 @@ export function useEventCalendar(eventDetail: SocietyDetailInfo | undefined, use
         isValid: session.isValid,
       }));
       
-      console.log('🔍 TimeSlots Debug:', {
-        selectedDate: selectedDate?.toISOString(),
-        sessionGroupDate: sessionGroup.date,
-        totalSlots: timeSlots.length,
-        slots: timeSlots.map(slot => ({
-          id: slot.id,
-          time: slot.startTime,
-          isAvailable: slot.isAvailable,
-          isValid: slot.isValid,
-          capacity: slot.capacity,
-          attendedCount: slot.attendedCount
-        }))
-      });
+
       
       return timeSlots;
     } catch (error) {

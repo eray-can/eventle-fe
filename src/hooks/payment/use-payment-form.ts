@@ -5,6 +5,19 @@ export interface PaymentFormData {
   surname: string;
   phone: string;
   email: string;
+  amount?: number;
+  termsAccepted?: boolean;
+  buyerInfo?: {
+    firstName: string;
+    lastName: string;
+    email: string;
+    phone: string;
+    address: string;
+    city: string;
+    country?: string;
+    zipCode?: string;
+    identityNumber?: string;
+  };
 }
 
 export interface PaymentFormErrors {
@@ -90,8 +103,11 @@ export const usePaymentForm = (): UsePaymentFormReturn => {
   const validateAllFields = useCallback((data: PaymentFormData): PaymentFormErrors => {
     const newErrors: PaymentFormErrors = {};
     Object.keys(data).forEach(key => {
-      const error = validateField(key, data[key as keyof PaymentFormData]);
-      if (error) newErrors[key as keyof PaymentFormErrors] = error;
+      const value = data[key as keyof PaymentFormData];
+      if (typeof value === 'string') {
+        const error = validateField(key, value);
+        if (error) newErrors[key as keyof PaymentFormErrors] = error;
+      }
     });
     return newErrors;
   }, [validateField]);
