@@ -8,6 +8,7 @@ export interface ApiRequestOptions {
   url: string;
   data?: Record<string, unknown>;
   params?: Record<string, unknown>;
+  headers?: Record<string, string>;
 }
 
 class ApiClient {
@@ -20,17 +21,21 @@ class ApiClient {
   }
 
   async request<T>(options: ApiRequestOptions): Promise<T> {
-    const { method, url, data } = options;
+    const { method, url, data, headers: customHeaders } = options;
 
     // Simple fetch wrapper - domain independent
     const fullUrl = `${this.baseURL}${url}`;
-    console.log(fullUrl)
+
+
+    const headers = {
+      'Content-Type': 'application/json',
+      ...customHeaders
+    };
+
     try {
       const response = await fetch(fullUrl, {
         method,
-        headers: {
-          'Content-Type': 'application/json',
-        },
+        headers,
         body: data ? JSON.stringify(data) : undefined,
         signal: AbortSignal.timeout(this.timeout),
       });
@@ -61,6 +66,10 @@ class ApiClient {
 
   delete<T>(url: string): Promise<T> {
     return this.request<T>({ method: 'DELETE', url });
+  }
+
+  getBaseURL(): string {
+    return this.baseURL;
   }
 }
 

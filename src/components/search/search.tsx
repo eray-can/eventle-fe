@@ -86,6 +86,7 @@ export function Search({
               transition-all duration-200
               ${showDropdown ? 'rounded-b-none border-b-0' : ''}
             `}
+            suppressHydrationWarning
           />
           {query && (
             <X 

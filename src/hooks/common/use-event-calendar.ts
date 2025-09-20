@@ -89,7 +89,7 @@ export function useEventCalendar(eventDetail: SocietyDetailInfo | undefined, use
       
       if (!sessionGroup) return [];
       
-      return sessionGroup.sessions.map(session => ({
+      const timeSlots = sessionGroup.sessions.map(session => ({
         id: session.id,
         startTime: session.startTime,
         endTime: session.endTime,
@@ -100,6 +100,10 @@ export function useEventCalendar(eventDetail: SocietyDetailInfo | undefined, use
         isAvailable: session.isAvailable,
         isValid: session.isValid,
       }));
+      
+
+      
+      return timeSlots;
     } catch (error) {
       console.error('Seans yükleme hatası:', error);
       return [];

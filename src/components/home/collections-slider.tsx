@@ -16,7 +16,7 @@ interface CollectionsSliderProps {
 
 
 export default function CollectionsSlider({ collections }: CollectionsSliderProps) {
-  console.log('CollectionsSlider received:', collections);
+
 
   // Sort collections to show Banner type first
   const sortedCollections = React.useMemo(() => {

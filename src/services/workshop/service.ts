@@ -3,18 +3,24 @@ import type { SocietyList, SocietyDetailInfo, SessionDetail } from '@/types/doma
 import type {
   GetAvailableSeansItemsRequest,
   GetAvailableSeansItemsResponse,
+  GetWorkshopDetailResponse
+} from '@/types/api/workshop';
+import { CreatePaymentRequest, CreatePaymentResponse } from '@/types/api/payment';
+import type { PaymentProvider } from '@/types/domain/payment';
+import type {
   GetSocietyDetailRequest,
-  GetSocietyDetailResponse,
   GetSessionDetailRequest,
   GetSessionDetailResponse
-} from '@/types/api';
+} from '@/types/api/society';
 import { mapSocietyList, mapSocietyDetail, mapSessionDetail } from '@/mappers/society';
 
 const AVAILABLE_SEANS_ITEMS_ENDPOINT = 'api/seller/public-seans-to-one/';
 const WORKSHOP_DETAIL_ENDPOINT = 'api/seller/public-seans-to-one/';
 const SESSION_DETAIL_ENDPOINT = 'api/seller/public/seans-items/';
+const CREATE_PAYMENT_ENDPOINT = 'api/seller/payment/create-public/';
+const CALLBACK_ENDPOINT = 'api/seller/payment/callback-public/';
 
-export class WorkshopService {
+export class WorkshopService implements PaymentProvider {
 
   async getAvailableSeansItems(request: GetAvailableSeansItemsRequest): Promise<SocietyList> {
     const { page, page_size, max_price, start_date, end_date } = request;
@@ -46,7 +52,7 @@ export class WorkshopService {
     const { id } = request;
     const url = `${WORKSHOP_DETAIL_ENDPOINT}${id}/`;
 
-    const workshopData = await httpApiClient.get<GetSocietyDetailResponse['response']>(url);
+    const workshopData = await httpApiClient.get<GetWorkshopDetailResponse['response']>(url);
     return mapSocietyDetail(workshopData);
   }
 
@@ -56,8 +62,7 @@ export class WorkshopService {
 
     try {
       const sessionData = await httpApiClient.get<GetSessionDetailResponse['response']>(url);
-      console.log('Workshop Session Detail API Data:', JSON.stringify(sessionData, null, 2));
-      console.log('Session Data type:', typeof sessionData);
+      
 
       if (!sessionData) {
         throw new Error('Session data is null or undefined');
@@ -68,6 +73,14 @@ export class WorkshopService {
       console.error('Workshop Session Detail API Error:', error);
       throw error;
     }
+  }
+
+  async createPayment(request: CreatePaymentRequest): Promise<CreatePaymentResponse> {
+      return await httpApiClient.post<CreatePaymentResponse>(CREATE_PAYMENT_ENDPOINT, request);
+  }
+
+  getCallbackUrl(): string {
+    return `${httpApiClient.getBaseURL()}${CALLBACK_ENDPOINT}`;
   }
 }
 

@@ -3,22 +3,13 @@
 import { Calendar, ChevronDown } from 'lucide-react';
 import { Calendar as CalendarComponent } from '@/components/ui/calendar';
 import { TimeSlotPicker } from '@/components/ui/time-slot-picker';
-import { useEventCalendar } from '@/hooks/common/use-event-calendar';
-import type { SocietyDetailInfo } from '@/types/domain';
+import { useEventCalendarContext } from '@/contexts/event-calendar';
 
 interface EventCalendarProps {
-  eventDetail?: SocietyDetailInfo;
-  sessionGroups?: unknown[];
-  eventId?: number;
-  useWorkshopService?: boolean;
   className?: string;
 }
 
 export function EventCalendar({
-  eventDetail,
-  sessionGroups,
-  eventId,
-  useWorkshopService,
   className
 }: EventCalendarProps) {
   const {
@@ -26,7 +17,7 @@ export function EventCalendar({
     selectedDate,
     selectedTimeSlot,
     sessionDetail,
-    isLoadingSessionDetail,
+
     availableDates,
     availableTimeSlots,
     minDate,
@@ -34,17 +25,14 @@ export function EventCalendar({
     handleDateSelect,
     toggleCalendar,
     handleTimeSlotSelect,
-  } = useEventCalendar(eventDetail || (sessionGroups && eventId ? {
-    id: eventId,
-    sessionGroups: sessionGroups,
-  } as SocietyDetailInfo : undefined), useWorkshopService);
+  } = useEventCalendarContext();
 
   return (
     <div className={className}>
-      <div className="space-y-6">
+      <div className="space-y-6 max-w-5xl mx-auto">
         {/* Tarih Seçici Butonu */}
         <div>
-          <button
+        <button
             onClick={toggleCalendar}
             className="w-full flex items-center justify-between p-4 bg-gray-50 dark:bg-gray-800 rounded-xl hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors border-2 border-gray-200 dark:border-gray-700"
           >
@@ -55,10 +43,10 @@ export function EventCalendar({
                   Etkinlik Tarihi
                 </div>
                 <div className="font-semibold text-gray-900 dark:text-white">
-                  {selectedDate ? selectedDate.toLocaleDateString('tr-TR', { 
-                    day: '2-digit', 
-                    month: '2-digit', 
-                    year: 'numeric' 
+                  {selectedDate ? selectedDate.toLocaleDateString('tr-TR', {
+                    day: '2-digit',
+                    month: '2-digit',
+                    year: 'numeric'
                   }) : 'Tarih Seçin'}
                 </div>
               </div>
@@ -83,17 +71,14 @@ export function EventCalendar({
 
         {/* Seans Seçimi */}
         <div>
-          {selectedDate ? (
-            <TimeSlotPicker
-              timeSlots={availableTimeSlots}
-              selectedSlot={selectedTimeSlot}
-              onSlotSelect={handleTimeSlotSelect}
-            />
-          ) : (
-            <div className="text-center py-8">
-              <p className="text-gray-500 dark:text-gray-400">
-                Lütfen önce bir tarih seçin
-              </p>
+          <TimeSlotPicker
+            timeSlots={availableTimeSlots}
+            selectedSlot={selectedTimeSlot}
+            onSlotSelect={handleTimeSlotSelect}
+          />
+          {availableTimeSlots.length === 0 && (
+            <div className="py-8">
+              {/* Boş alan - sayfa kaymasını önlemek için */}
             </div>
           )}
         </div>
@@ -101,11 +86,7 @@ export function EventCalendar({
         {/* Session Detail Bilgileri */}
         {selectedTimeSlot && (
           <div className="space-y-4 pt-4 border-t border-gray-200 dark:border-gray-700">
-            {isLoadingSessionDetail ? (
-              <div className="text-center py-4">
-                <p className="text-gray-500 dark:text-gray-400">Detaylar yükleniyor...</p>
-              </div>
-            ) : sessionDetail ? (
+            {sessionDetail ? (
               <div className="space-y-4">
                 {/* Requirements */}
                 {sessionDetail.requirements && (
@@ -131,9 +112,9 @@ export function EventCalendar({
                 {sessionDetail.additionalLink && (
                   <div>
                     <h4 className="text-gray-400 text-sm mb-2">Grup Linki</h4>
-                    <a 
-                      href={sessionDetail.additionalLink} 
-                      target="_blank" 
+                    <a
+                      href={sessionDetail.additionalLink}
+                      target="_blank"
                       rel="noopener noreferrer"
                       className="text-purple-400 hover:text-purple-300 text-sm underline"
                     >

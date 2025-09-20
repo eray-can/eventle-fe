@@ -82,7 +82,7 @@ export default async function Home() {
   const workshopEventsList = await getWorkshopEvents();
   const collections = await getCollections();
 
-  console.log('Collections data:', collections);
+
 
   return (
     <div className="min-h-screen" style={{ backgroundColor: '#111828' }}>

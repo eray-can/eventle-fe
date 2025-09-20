@@ -1,20 +1,26 @@
 import { httpApiClient } from '../clients/api-client';
 import type { SocietyList, SocietyDetailInfo, SessionDetail } from '@/types/domain';
 import type {
-  GetAvailableSeansItemsRequest,
-  GetAvailableSeansItemsResponse,
   GetSocietyDetailRequest,
   GetSocietyDetailResponse,
   GetSessionDetailRequest,
   GetSessionDetailResponse
-} from '@/types/api';
+} from '@/types/api/society';
+import type {
+  GetAvailableSeansItemsRequest,
+  GetAvailableSeansItemsResponse
+} from '@/types/api/workshop';
+import { CreatePaymentRequest, CreatePaymentResponse } from '@/types/api/payment';
+import type { PaymentProvider } from '@/types/domain/payment';
 import { mapSocietyList, mapSocietyDetail, mapSessionDetail } from '@/mappers/society';
 
 const AVAILABLE_SEANS_ITEMS_ENDPOINT = 'api/society/public-seans-to-one/';
 const SOCIETY_DETAIL_ENDPOINT = 'api/society/public-seans-to-one/';
 const SESSION_DETAIL_ENDPOINT = 'api/society/public/seans-items/';
+const CREATE_PAYMENT_ENDPOINT = 'api/society/payment/create-public/';
+const CALLBACK_ENDPOINT = 'api/society/payment/callback-public/';
 
-export class SocietyService {
+export class SocietyService implements PaymentProvider {
 
   async getAvailableSeansItems(request: GetAvailableSeansItemsRequest): Promise<SocietyList> {
     const { page, page_size, max_price, start_date, end_date } = request;
@@ -57,8 +63,7 @@ export class SocietyService {
     try {
       // httpApiClient.get() zaten response.response'u döndürür
       const sessionData = await httpApiClient.get<GetSessionDetailResponse['response']>(url);
-      console.log('Session Detail API Data:', JSON.stringify(sessionData, null, 2));
-      console.log('Session Data type:', typeof sessionData);
+      
 
       if (!sessionData) {
         throw new Error('Session data is null or undefined');
@@ -69,6 +74,19 @@ export class SocietyService {
       console.error('Session Detail API Error:', error);
       throw error;
     }
+  }
+
+  async createPayment(request: CreatePaymentRequest): Promise<CreatePaymentResponse> {
+    try {
+     return await httpApiClient.post<CreatePaymentResponse>(CREATE_PAYMENT_ENDPOINT, request);
+    } catch (error) {
+      console.error('Society Payment Creation Error:', error);
+      throw error;
+    }
+  }
+
+  getCallbackUrl(): string {
+    return `${httpApiClient.getBaseURL()}${CALLBACK_ENDPOINT}`;
   }
 }
 

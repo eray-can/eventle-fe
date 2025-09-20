@@ -4,6 +4,8 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { workshopService } from '@/services/workshop/service';
 import { EventCalendar } from '@/components/common/event-calendar';
+import { EventCalendarProvider } from '@/contexts/event-calendar/context';
+import { PurchaseSection } from '@/components/common/purchase-section';
 import { capitalizeTitle, BASE_DOMAIN } from '@/lib/utils';
 import { FAQ } from '@/components/common/faq';
 import { generateWorkshopFAQ } from '@/lib/faq-generator';
@@ -205,10 +207,15 @@ export default async function WorkshopDetailPage({ params }: WorkshopDetailPageP
         </div>
 
         {/* Mobile Calendar Section */}
-        <div>
-          <h3 className="text-white font-medium text-lg mb-4">Tarih ve Saat Seçin</h3>
-          <EventCalendar eventDetail={workshopDetail} useWorkshopService={true} />
-        </div>
+        <EventCalendarProvider eventDetail={workshopDetail} useWorkshopService={true}>
+          <div>
+            <h3 className="text-white font-medium text-lg mb-4">Tarih ve Saat Seçin</h3>
+            <EventCalendar />
+          </div>
+
+          {/* Mobile Purchase Section */}
+          <PurchaseSection variant="mobile" />
+        </EventCalendarProvider>
 
         {/* FAQ Section - Mobile */}
         <FAQ
@@ -372,51 +379,12 @@ export default async function WorkshopDetailPage({ params }: WorkshopDetailPageP
 
 
               {/* Desktop Calendar Section */}
-              <EventCalendar eventDetail={workshopDetail} useWorkshopService={true} />
+              <EventCalendarProvider eventDetail={workshopDetail} useWorkshopService={true}>
+                <EventCalendar />
 
-              {/* Desktop Purchase Section */}
-              <Card className="bg-gray-900/50 border-gray-700">
-                <CardContent className="p-6">
-                  <div className="flex items-center justify-between">
-                    <div>
-                      {workshopDetail.sessionGroups[0]?.sessions[0]?.discountedPrice ? (
-                        <div>
-                          <div className="text-3xl font-bold text-white">
-                            {workshopDetail.sessionGroups[0].sessions[0].discountedPrice.toLocaleString()} ₺
-                          </div>
-                          <div className="line-through text-gray-500">
-                            {workshopDetail.sessionGroups[0].sessions[0].price.toLocaleString()} ₺
-                          </div>
-                        </div>
-                      ) : (
-                        <div className="text-3xl font-bold text-white">
-                          {workshopDetail.sessionGroups[0]?.sessions[0]?.price.toLocaleString()} ₺
-                        </div>
-                      )}
-                    </div>
-                    <div className="flex items-center gap-4">
-                      <div className="flex items-center border border-gray-600 rounded-lg">
-                        <button className="w-12 h-12 flex items-center justify-center text-white hover:bg-gray-700 rounded-l-lg">
-                          <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M20 12H4" />
-                          </svg>
-                        </button>
-                        <div className="w-16 h-12 flex items-center justify-center text-white font-medium border-x border-gray-600">
-                          1
-                        </div>
-                        <button className="w-12 h-12 flex items-center justify-center text-white hover:bg-gray-700 rounded-r-lg">
-                          <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
-                          </svg>
-                        </button>
-                      </div>
-                      <Button className="bg-purple-600 hover:bg-purple-700 text-white px-8 py-3 text-lg font-semibold">
-                        Satın Al
-                      </Button>
-                    </div>
-                  </div>
-                </CardContent>
-              </Card>
+                {/* Desktop Purchase Section */}
+                <PurchaseSection variant="desktop" />
+              </EventCalendarProvider>
             </div>
           </div>
 
