@@ -57,8 +57,8 @@ export default async function PaymentPage({ searchParams }: PaymentPageProps) {
                       <Image
                         src={sessionData.imageUrl || '/static/media/default-event.jpg'}
                         alt={sessionData.title}
-                        width={200}
-                        height={200}
+                        width={80}
+                        height={80}
                         className="w-full h-full object-cover"
                         fallbackSrc="/static/media/default-event-image.jpg"
                       />
@@ -69,6 +69,7 @@ export default async function PaymentPage({ searchParams }: PaymentPageProps) {
                         <MapPin className="w-3 h-3 mr-1 flex-shrink-0" />
                         <span>{sessionData.location || 'Konum belirtilmemiş'}</span>
                       </div>
+                      <div className="text-xs lg:text-sm text-gray-400 mb-1">{sessionData.category === 'society' ? 'Topluluk' : 'Workshop'}</div>
                       <div className="flex items-center text-xs lg:text-sm text-blue-400 mb-1">
                         <Calendar className="w-3 h-3 mr-1 flex-shrink-0" />
                         <span>{sessionData.sessionDate}</span>
@@ -141,11 +142,35 @@ export default async function PaymentPage({ searchParams }: PaymentPageProps) {
                        <div className="font-medium">Banka/Kredi Kartı ile Öde</div>
                        <div className="text-sm text-gray-400">Kredi kartı veya banka kartı ile güvenle ödeme yapabilirsiniz.</div>
                      </div>
-                     <div className="ml-auto flex space-x-1">
-                       <span className="bg-orange-500 text-white px-2 py-1 rounded text-xs font-bold">MC</span>
-                       <span className="bg-blue-600 text-white px-2 py-1 rounded text-xs font-bold">V</span>
-                       <span className="bg-green-600 text-white px-2 py-1 rounded text-xs font-bold">T</span>
-                       <span className="bg-blue-800 text-white px-2 py-1 rounded text-xs font-bold">AE</span>
+                     <div className="ml-auto lg:flex lg:space-x-2 grid grid-cols-2 gap-2 lg:grid-cols-4 lg:gap-2">
+                       <Image
+                         src="/static/media/mastercard-logo.svg"
+                         alt="Mastercard"
+                         width={40}
+                         height={40}
+                         className="h-8 w-auto"
+                       />
+                       <Image
+                         src="/static/media/visa-logo.svg"
+                         alt="Visa"
+                         width={40}
+                         height={40}
+                         className="h-8 w-auto"
+                       />
+                       <Image
+                         src="/static/media/troy-logo.png"
+                         alt="Troy"
+                         width={40}
+                         height={40}
+                         className="h-8 w-auto"
+                       />
+                       <Image
+                         src="/static/media/amex-logo.svg"
+                         alt="American Express"
+                         width={40}
+                         height={40}
+                         className="h-8 w-auto"
+                       />
                      </div>
                    </label>
                  </div>
