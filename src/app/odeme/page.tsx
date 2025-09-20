@@ -1,7 +1,9 @@
-import { Calendar, MapPin, CreditCard, Clock } from 'lucide-react';
+import { Calendar, MapPin, Clock } from 'lucide-react';
 import { decodePaymentData } from '@/lib/utils';
 import { redirect } from 'next/navigation';
+import { PaymentProvider } from '@/contexts/payment';
 import PaymentForm from '@/components/payment/payment-form';
+import PaymentTerms from '@/components/payment/payment-terms';
 import { paymentAdapter } from '@/adapters';
 import Image from '@/components/ui/image';
 
@@ -35,7 +37,7 @@ export default async function PaymentPage({ searchParams }: PaymentPageProps) {
     console.error('Payment session data fetch error:', error);
     redirect('/');
   }
-
+  
   const effectivePrice = sessionData.discountedPrice || sessionData.price;
   const totalAmount = decodedData.ticket_count * effectivePrice;
 
@@ -120,80 +122,20 @@ export default async function PaymentPage({ searchParams }: PaymentPageProps) {
 
             {/* İletişim Bilgileri ve Ödeme Yöntemi - Mobilde altta */}
             <div className="lg:col-span-2 lg:order-1 order-2 space-y-6">
-              <div className="bg-gray-800/50 rounded-xl p-6 border border-gray-700">
-                <h2 className="text-lg font-semibold mb-6">İletişim Bilgileri</h2>
-                <PaymentForm paymentData={sessionData} />
-              </div>
+              <PaymentProvider 
+                sessionData={sessionData}
+                decodedData={decodedData}
+                totalAmount={totalAmount}
+              >
+                {/* İletişim Bilgileri */}
+                <div className="bg-gray-800/50 rounded-xl p-6 border border-gray-700">
+                  <h2 className="text-lg font-semibold mb-6">İletişim Bilgileri</h2>
+                  <PaymentForm />
+                </div>
 
-              {/* Ödeme Yöntemi */}
-               <div className="bg-gray-800/50 rounded-xl p-6 border border-gray-700">
-                 <h3 className="text-lg font-semibold mb-6">Bir Ödeme Yöntemi Seçin</h3>
-                 <div className="space-y-3">
-                   <label className="flex items-center p-4 border-2 border-blue-500 rounded-xl cursor-pointer bg-gray-700/30">
-                     <input
-                       type="radio"
-                       name="paymentMethod"
-                       value="card"
-                       defaultChecked
-                       className="mr-3 text-blue-500"
-                     />
-                     <CreditCard className="w-5 h-5 mr-3 text-blue-400" />
-                     <div className="flex-1">
-                       <div className="font-medium">Banka/Kredi Kartı ile Öde</div>
-                       <div className="text-sm text-gray-400">Kredi kartı veya banka kartı ile güvenle ödeme yapabilirsiniz.</div>
-                     </div>
-                     <div className="ml-auto lg:flex lg:space-x-2 grid grid-cols-2 gap-2 lg:grid-cols-4 lg:gap-2">
-                       <Image
-                         src="/static/media/mastercard-logo.svg"
-                         alt="Mastercard"
-                         width={40}
-                         height={40}
-                         className="h-8 w-auto"
-                       />
-                       <Image
-                         src="/static/media/visa-logo.svg"
-                         alt="Visa"
-                         width={40}
-                         height={40}
-                         className="h-8 w-auto"
-                       />
-                       <Image
-                         src="/static/media/troy-logo.png"
-                         alt="Troy"
-                         width={40}
-                         height={40}
-                         className="h-8 w-auto"
-                       />
-                       <Image
-                         src="/static/media/amex-logo.svg"
-                         alt="American Express"
-                         width={40}
-                         height={40}
-                         className="h-8 w-auto"
-                       />
-                     </div>
-                   </label>
-                 </div>
-
-                 <div className="space-y-4 mt-6">
-                   <label className="flex items-start space-x-3">
-                     <input
-                       type="checkbox"
-                       className="mt-1 text-blue-500 focus:ring-blue-500"
-                     />
-                     <span className="text-sm text-gray-400 leading-relaxed">
-                       Mesafeli Satış Sözleşmesi ve Gizlilik Sözleşmesi&apos;ni okudum ve kabul ediyorum.
-                     </span>
-                   </label>
-                 </div>
-
-                 <button
-                   type="button"
-                   className="w-full bg-blue-600 hover:bg-blue-700 disabled:bg-gray-600 disabled:opacity-50 text-white py-2 lg:py-4 px-4 lg:px-6 rounded-xl font-semibold text-base lg:text-lg transition-all duration-200 mt-6"
-                 >
-                   ₺{totalAmount.toLocaleString('tr-TR')} - Satın Al
-                 </button>
-               </div>
+                {/* Ödeme Yöntemi */}
+                <PaymentTerms />
+              </PaymentProvider>
             </div>
           </div>
         </div>

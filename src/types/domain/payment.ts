@@ -14,6 +14,7 @@ export interface PaymentData {
   availableSeats?: number;
   category: 'society' | 'workshop';
   imageUrl?: string;
+  [key: string]: unknown;
 }
 
 export interface PaymentSessionRequest {

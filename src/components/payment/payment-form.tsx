@@ -1,40 +1,42 @@
 'use client';
 
-import { useState } from 'react';
-import { PaymentData } from '@/types/domain';
+import { useEffect } from 'react';
+import { usePaymentForm } from '@/hooks/payment';
+import { usePayment } from '@/contexts/payment';
 
-interface PaymentFormProps {
-  paymentData: PaymentData;
-}
+export default function PaymentForm() {
+  const { setIsFormValid, setFormData, handlePayment } = usePayment();
+  const {
+    formData,
+    errors,
+    isValid,
+    showErrors,
+    handleInputChange,
+    handleBlur,
+    validateForm
+  } = usePaymentForm();
 
-export default function PaymentForm({ paymentData }: PaymentFormProps) {
-  const [formData, setFormData] = useState({
-    name: '',
-    surname: '',
-    phone: '',
-    email: ''
-  });
+  // Notify context of validation changes
+  useEffect(() => {
+    setIsFormValid(isValid);
+  }, [isValid, setIsFormValid]);
 
-
-
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = e.target;
-    setFormData(prev => ({
-      ...prev,
-      [name]: value
-    }));
-  };
+  // Notify context of form data changes
+  useEffect(() => {
+    setFormData(formData);
+  }, [formData, setFormData]);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    // Ödeme işlemi burada yapılacak
-    console.log('Payment data:', { paymentData, formData });
+    const isFormValid = validateForm();
+    
+    if (isFormValid) {
+      handlePayment(formData);
+    }
   };
 
-
-
   return (
-    <form onSubmit={handleSubmit} className="space-y-4">
+    <form id="payment-form" onSubmit={handleSubmit} className="space-y-4" noValidate>
       <div className="grid grid-cols-2 gap-4">
         <div>
           <label className="block text-sm font-medium mb-2">
@@ -45,11 +47,15 @@ export default function PaymentForm({ paymentData }: PaymentFormProps) {
             name="name"
             value={formData.name}
             onChange={handleInputChange}
-            className="w-full px-4 py-3 bg-gray-700/50 border border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+            onBlur={handleBlur}
+            className={`w-full px-4 py-3 bg-gray-700/50 border rounded-lg focus:outline-none focus:ring-2 focus:border-transparent ${
+              showErrors && errors.name ? 'border-red-500 focus:ring-red-500' : 'border-gray-600 focus:ring-purple-500'
+            }`}
             placeholder="Adınızı giriniz"
             required
             suppressHydrationWarning
           />
+          {showErrors && errors.name && <p className="text-red-400 text-sm mt-1">{errors.name}</p>}
         </div>
         <div>
           <label className="block text-sm font-medium mb-2">
@@ -60,11 +66,15 @@ export default function PaymentForm({ paymentData }: PaymentFormProps) {
             name="surname"
             value={formData.surname}
             onChange={handleInputChange}
-            className="w-full px-4 py-3 bg-gray-700/50 border border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+            onBlur={handleBlur}
+            className={`w-full px-4 py-3 bg-gray-700/50 border rounded-lg focus:outline-none focus:ring-2 focus:border-transparent ${
+              showErrors && errors.surname ? 'border-red-500 focus:ring-red-500' : 'border-gray-600 focus:ring-purple-500'
+            }`}
             placeholder="Soyadınızı giriniz"
             required
             suppressHydrationWarning
           />
+          {showErrors && errors.surname && <p className="text-red-400 text-sm mt-1">{errors.surname}</p>}
         </div>
       </div>
       
@@ -77,11 +87,16 @@ export default function PaymentForm({ paymentData }: PaymentFormProps) {
           name="phone"
           value={formData.phone}
           onChange={handleInputChange}
-          className="w-full px-4 py-3 bg-gray-700/50 border border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+          onBlur={handleBlur}
+          className={`w-full px-4 py-3 bg-gray-700/50 border rounded-lg focus:outline-none focus:ring-2 focus:border-transparent ${
+            showErrors && errors.phone ? 'border-red-500 focus:ring-red-500' : 'border-gray-600 focus:ring-purple-500'
+          }`}
           placeholder="05XX XXX XX XX"
+          maxLength={14}
           required
           suppressHydrationWarning
         />
+        {showErrors && errors.phone && <p className="text-red-400 text-sm mt-1">{errors.phone}</p>}
       </div>
       
       <div>
@@ -93,16 +108,16 @@ export default function PaymentForm({ paymentData }: PaymentFormProps) {
           name="email"
           value={formData.email}
           onChange={handleInputChange}
-          className="w-full px-4 py-3 bg-gray-700/50 border border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+          onBlur={handleBlur}
+          className={`w-full px-4 py-3 bg-gray-700/50 border rounded-lg focus:outline-none focus:ring-2 focus:border-transparent ${
+            showErrors && errors.email ? 'border-red-500 focus:ring-red-500' : 'border-gray-600 focus:ring-purple-500'
+          }`}
           placeholder="ornek@email.com"
           required
           suppressHydrationWarning
         />
+        {showErrors && errors.email && <p className="text-red-400 text-sm mt-1">{errors.email}</p>}
       </div>
-      
-
-      
-
     </form>
   );
 }

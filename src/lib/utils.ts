@@ -100,18 +100,19 @@ export function decodeFromBase64<T>(encodedData: string): T | null {
 }
 
 // Ödeme verisi için özel tip
-export interface PaymentData {
+export interface EncodedPaymentData {
   type: string;
   seans_id: number;
   ticket_count: number;
+  [key: string]: unknown;
 }
 
 // Ödeme verisi şifreleme
-export function encodePaymentData(data: PaymentData): string {
+export function encodePaymentData(data: EncodedPaymentData): string {
   return encodeToBase64(data);
 }
 
 // Ödeme verisi çözme
-export function decodePaymentData(encodedData: string): PaymentData | null {
-  return decodeFromBase64<PaymentData>(encodedData);
+export function decodePaymentData(encodedData: string): EncodedPaymentData | null {
+  return decodeFromBase64<EncodedPaymentData>(encodedData);
 }

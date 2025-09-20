@@ -3,7 +3,7 @@
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { useEventCalendarContext } from '@/contexts/event-calendar';
-import { cn, encodePaymentData, type PaymentData } from '@/lib/utils';
+import { cn, encodePaymentData, type EncodedPaymentData } from '@/lib/utils';
 import { useRouter } from 'next/navigation';
 
 interface PurchaseSectionProps {
@@ -41,7 +41,7 @@ export function PurchaseSection({
   const handlePurchaseClick = () => {
     if (!isDisabled) {
       // Base64 ile şifrelenmiş veri oluştur
-      const paymentData: PaymentData = {
+      const paymentData: EncodedPaymentData = {
         type: contextCategory,
         seans_id: selectedTimeSlot?.id || 12,
         ticket_count: quantity
